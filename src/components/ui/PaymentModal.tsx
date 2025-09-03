@@ -71,7 +71,7 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
               </p>
             </div>
 
-            <Card className="bg-emerald-50 border-emerald-200">
+            <Card className="bg-blue-50 border-blue-200">
               <CardContent className="p-4">
                 <div className="flex justify-between items-start mb-3">
                   <div>
@@ -94,7 +94,7 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
                   </div>
                   <div>
                     <span className="text-slate-500">Price:</span>
-                    <p className="font-bold text-emerald-600">${session.price}</p>
+                    <p className="font-bold text-blue-700">${session.price}</p>
                   </div>
                 </div>
               </CardContent>
@@ -133,7 +133,7 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
                     onClick={() => setPaymentMethod('card')}
                     className={`p-3 border rounded-lg flex items-center justify-center space-x-2 ${
                       paymentMethod === 'card'
-                        ? 'border-emerald-500 bg-emerald-50 text-emerald-700'
+                        ? 'border-blue-500 bg-blue-50 text-blue-800'
                         : 'border-slate-300 hover:border-slate-400'
                     }`}
                   >
@@ -144,7 +144,7 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
                     onClick={() => setPaymentMethod('paypal')}
                     className={`p-3 border rounded-lg flex items-center justify-center space-x-2 ${
                       paymentMethod === 'paypal'
-                        ? 'border-emerald-500 bg-emerald-50 text-emerald-700'
+                        ? 'border-blue-500 bg-blue-50 text-blue-800'
                         : 'border-slate-300 hover:border-slate-400'
                     }`}
                   >
@@ -204,7 +204,7 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
       case 'processing':
         return (
           <div className="text-center py-8">
-            <div className="animate-spin w-16 h-16 border-4 border-emerald-200 border-t-emerald-600 rounded-full mx-auto mb-4"></div>
+            <div className="animate-spin w-16 h-16 border-4 border-blue-200 border-t-blue-700 rounded-full mx-auto mb-4"></div>
             <h3 className="text-xl font-bold text-slate-900 mb-2">
               Processing Payment
             </h3>
@@ -217,7 +217,7 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
       case 'success':
         return (
           <div className="text-center py-8">
-            <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
               <CheckCircle className="w-10 h-10 text-green-600" />
             </div>
             <h3 className="text-xl font-bold text-slate-900 mb-2">
@@ -226,8 +226,8 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
             <p className="text-slate-600 mb-4">
               You've successfully enrolled in the session. You'll receive an email with the Zoom link shortly.
             </p>
-            <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-4">
-              <p className="text-emerald-800 text-sm">
+            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+              <p className="text-blue-800 text-sm">
                 <strong>Next Steps:</strong> Check your email for session details and join instructions.
               </p>
             </div>

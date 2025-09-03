@@ -67,10 +67,10 @@ export const RecitationTracker: React.FC<RecitationTrackerProps> = ({
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-slate-600">Today</p>
-                <p className="text-2xl font-bold text-emerald-600">{todayTotal}min</p>
+                <p className="text-2xl font-bold text-blue-700">{todayTotal}min</p>
               </div>
-              <div className="w-12 h-12 bg-emerald-100 rounded-full flex items-center justify-center">
-                <BookOpen className="w-6 h-6 text-emerald-600" />
+              <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
+                <BookOpen className="w-6 h-6 text-blue-700" />
               </div>
             </div>
           </CardContent>
@@ -165,7 +165,7 @@ export const RecitationTracker: React.FC<RecitationTrackerProps> = ({
                   value={formData.notes}
                   onChange={(e) => setFormData({...formData, notes: e.target.value})}
                   placeholder="Any notes about your recitation session..."
-                  className="w-full px-3 py-2 border border-slate-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                  className="w-full px-3 py-2 border border-slate-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                   rows={3}
                 />
               </div>
@@ -208,8 +208,8 @@ export const RecitationTracker: React.FC<RecitationTrackerProps> = ({
                   className="flex items-center justify-between p-4 bg-slate-50 rounded-lg"
                 >
                   <div className="flex items-center space-x-3">
-                    <div className="w-10 h-10 bg-emerald-100 rounded-full flex items-center justify-center">
-                      <BookOpen className="w-5 h-5 text-emerald-600" />
+                    <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
+                      <BookOpen className="w-5 h-5 text-blue-700" />
                     </div>
                     <div>
                       <h4 className="font-medium text-slate-900">{entry.surahName}</h4>

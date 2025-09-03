@@ -1,7 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { User } from '../types';
 import { authService, LoginRequest, RegisterRequest, AuthResponse } from '../services/authService';
-import { useToast } from './useToast';
 
 export const useLocalStorage = <T>(key: string, initialValue: T) => {
     const [storedValue, setStoredValue] = useState<T>(() => {
@@ -28,7 +27,6 @@ export const useLocalStorage = <T>(key: string, initialValue: T) => {
 };
 
 export const useAuth = () => {
-    const { success: showSuccess, error: showError, info: showInfo } = useToast();
     const [user, setUser] = useState<User | null>(authService.getCurrentUser());
     const [isAuthenticated, setIsAuthenticated] = useState(authService.isAuthenticated());
     const [isLoading, setIsLoading] = useState(false);
@@ -52,15 +50,11 @@ export const useAuth = () => {
             if (response.success && response.data) {
                 setUser(response.data.user);
                 setIsAuthenticated(true);
-                showSuccess('Login successful!', 'Welcome back.');
-            } else {
-                showError('Login failed', response.message || 'Please try again.');
             }
 
             return response;
         } catch (error) {
             const errorMessage = error instanceof Error ? error.message : 'Login failed';
-            showError('Login failed', errorMessage);
             return {
                 success: false,
                 message: errorMessage,
@@ -69,7 +63,7 @@ export const useAuth = () => {
         } finally {
             setIsLoading(false);
         }
-    }, [showSuccess, showError]);
+    }, []);
 
     // Register function
     const register = useCallback(async (userData: RegisterRequest): Promise<AuthResponse> => {
@@ -81,15 +75,11 @@ export const useAuth = () => {
             if (response.success && response.data) {
                 setUser(response.data.user);
                 setIsAuthenticated(true);
-                showSuccess('Registration successful!', 'Welcome to Ismail Academy.');
-            } else {
-                showError('Registration failed', response.message || 'Please try again.');
             }
 
             return response;
         } catch (error) {
             const errorMessage = error instanceof Error ? error.message : 'Registration failed';
-            showError('Registration failed', errorMessage);
             return {
                 success: false,
                 message: errorMessage,
@@ -98,15 +88,14 @@ export const useAuth = () => {
         } finally {
             setIsLoading(false);
         }
-    }, [showSuccess, showError]);
+    }, []);
 
     // Logout function
     const logout = useCallback(() => {
         authService.logout();
         setUser(null);
         setIsAuthenticated(false);
-        showInfo('Logged out', 'You have been logged out successfully.');
-    }, [showInfo]);
+    }, []);
 
     // Refresh token function
     const refreshToken = useCallback(async (): Promise<boolean> => {

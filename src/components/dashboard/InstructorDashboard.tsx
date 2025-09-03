@@ -69,7 +69,7 @@ export const InstructorDashboard: React.FC<InstructorDashboardProps> = ({
       onClick={onClick}
       className={`flex items-center space-x-2 px-4 py-2 rounded-lg font-medium transition-all ${
         isActive 
-          ? 'bg-emerald-100 text-emerald-700 shadow-sm' 
+          ? 'bg-blue-100 text-blue-800 shadow-sm' 
           : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
       }`}
     >
@@ -254,16 +254,16 @@ export const InstructorDashboard: React.FC<InstructorDashboardProps> = ({
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-emerald-50">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
       {/* Header */}
       <header className="bg-white shadow-sm border-b border-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 bg-gradient-to-br from-emerald-600 to-teal-600 rounded-lg flex items-center justify-center">
+              <div className="w-10 h-10 bg-gradient-to-br from-blue-700 to-blue-800 rounded-lg flex items-center justify-center">
                 <BookOpen className="w-6 h-6 text-white" />
               </div>
-              <h1 className="text-xl font-bold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">
+              <h1 className="text-xl font-bold bg-gradient-to-r from-blue-700 to-blue-800 bg-clip-text text-transparent">
                 Instructor Dashboard
               </h1>
             </div>
@@ -277,8 +277,8 @@ export const InstructorDashboard: React.FC<InstructorDashboardProps> = ({
               </div>
               
               <div className="flex items-center space-x-3">
-                <div className="w-8 h-8 bg-emerald-100 rounded-full flex items-center justify-center">
-                  <User className="w-5 h-5 text-emerald-600" />
+                <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+                  <User className="w-5 h-5 text-blue-700" />
                 </div>
                 <span className="text-sm font-medium text-slate-700">{instructor.name}</span>
               </div>
@@ -367,8 +367,8 @@ export const InstructorDashboard: React.FC<InstructorDashboardProps> = ({
                       <p className="text-sm text-slate-500 mb-1">Active Sessions</p>
                       <p className="text-2xl font-bold text-slate-900">{sessions.filter(s => s.status === 'active').length}</p>
                     </div>
-                    <div className="w-12 h-12 bg-emerald-100 rounded-lg flex items-center justify-center">
-                      <Video className="w-6 h-6 text-emerald-600" />
+                    <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                      <Video className="w-6 h-6 text-blue-700" />
                     </div>
                   </div>
                 </CardContent>
@@ -419,8 +419,8 @@ export const InstructorDashboard: React.FC<InstructorDashboardProps> = ({
                   {sessions.slice(0, 3).map((session) => (
                     <div key={session.id} className="flex items-center justify-between p-4 bg-slate-50 rounded-lg">
                       <div className="flex items-center space-x-4">
-                        <div className="w-12 h-12 bg-emerald-100 rounded-lg flex items-center justify-center">
-                          <Video className="w-6 h-6 text-emerald-600" />
+                        <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                          <Video className="w-6 h-6 text-blue-700" />
                         </div>
                         <div>
                           <h4 className="font-medium text-slate-900">{session.title}</h4>
@@ -502,7 +502,7 @@ export const InstructorDashboard: React.FC<InstructorDashboardProps> = ({
                     </div>
                     
                     <div className="flex justify-between items-center">
-                      <span className="text-lg font-bold text-emerald-600">${session.price}</span>
+                      <span className="text-lg font-bold text-blue-700">${session.price}</span>
                       <Button size="sm" onClick={() => onStartSession(session.id)}>
                         Start Session
                       </Button>
@@ -537,8 +537,8 @@ export const InstructorDashboard: React.FC<InstructorDashboardProps> = ({
                         <tr key={student.id} className="border-b border-slate-100 hover:bg-slate-50">
                           <td className="p-4">
                             <div className="flex items-center space-x-3">
-                              <div className="w-10 h-10 bg-emerald-100 rounded-full flex items-center justify-center">
-                                <User className="w-5 h-5 text-emerald-600" />
+                              <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
+                                <User className="w-5 h-5 text-blue-700" />
                               </div>
                               <div>
                                 <p className="font-medium text-slate-900">{student.name}</p>
@@ -556,7 +556,7 @@ export const InstructorDashboard: React.FC<InstructorDashboardProps> = ({
                             <div className="flex items-center space-x-2">
                               <div className="w-16 bg-slate-200 rounded-full h-2">
                                 <div 
-                                  className="bg-emerald-500 h-2 rounded-full" 
+                                  className="bg-blue-500 h-2 rounded-full" 
                                   style={{ width: `${Math.min(student.progress.weeklyGoal > 0 ? (student.progress.weeklyProgress / student.progress.weeklyGoal) * 100 : 0, 100)}%` }}
                                 />
                               </div>
@@ -591,7 +591,7 @@ export const InstructorDashboard: React.FC<InstructorDashboardProps> = ({
                   <h4 className="font-semibold text-slate-900">Monthly Revenue</h4>
                 </CardHeader>
                 <CardContent>
-                  <div className="text-3xl font-bold text-emerald-600 mb-2">${totalRevenue}</div>
+                  <div className="text-3xl font-bold text-blue-700 mb-2">${totalRevenue}</div>
                   <p className="text-sm text-slate-500">+12% from last month</p>
                 </CardContent>
               </Card>

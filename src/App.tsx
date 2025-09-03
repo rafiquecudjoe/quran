@@ -8,6 +8,7 @@ import { InstructorDashboard } from './components/dashboard/InstructorDashboard'
 import { Toast } from './components/ui/Toast';
 import { User, Session, Instructor, Notification, Payment, RecitationEntry, SignupFormData } from './types';
 import { authService, RegisterRequest } from './services/authService';
+import { useAuth } from './hooks/useAuth';
 import { useToast } from './hooks/useToast';
 
 type Page = 'home' | 'login' | 'signup' | 'student-dashboard' | 'instructor-dashboard' | 'salat-videos';
@@ -49,7 +50,7 @@ const mockUser: User = {
     sessionsIncluded: 16,
     sessionsUsed: 8
   },
-  selectedSessions: ['1', '2'],
+  selectedSessions: ['1', '2', '4'], // Mock user enrolled in 3 sessions
   progress: {
     totalHours: 45,
     completedLessons: 12,
@@ -141,9 +142,120 @@ const mockSessions: Session[] = [
       nativeAppLink: 'zoommtg://zoom.us/join?confno=987654321&pwd=tajweed123',
       webLink: 'https://zoom.us/wc/join/987654321?pwd=tajweed123',
       generatedAt: '2025-09-04T18:00:00Z',
-      isReady: false
+      isReady: true
     },
-    materials: ['Advanced Tajweed Book']
+    materials: ['Quran', 'Tajweed Rules', 'Practice Sheets']
+  },
+  {
+    id: '3',
+    title: 'Beginner Memorization Circle',
+    description: 'Learn Quranic memorization techniques with fellow beginners.',
+    instructor: mockInstructor,
+    schedule: {
+      day: 'Tuesday',
+      startTime: '19:00',
+      endTime: '20:00',
+      timezone: 'EST'
+    },
+    region: 'North America',
+    levelRange: 'beginner-focus',
+    ageGroup: 'all',
+    maxStudents: 12,
+    enrolledStudents: 9,
+    price: 20,
+    category: 'memorization',
+    status: 'active',
+    zoomMeeting: {
+      id: 'zm3',
+      sessionId: '3',
+      meetingId: '456789123',
+      joinUrl: 'https://zoom.us/j/456789123?pwd=example',
+      hostUrl: 'https://zoom.us/s/456789123?zak=example',
+      password: 'hifz123',
+      startTime: '2025-09-04T19:00:00Z',
+      duration: 60,
+      recordingEnabled: true,
+      status: 'scheduled',
+      nativeAppLink: 'zoommtg://zoom.us/join?confno=456789123&pwd=hifz123',
+      webLink: 'https://zoom.us/wc/join/456789123?pwd=hifz123',
+      generatedAt: '2025-09-04T17:00:00Z',
+      isReady: true
+    },
+    materials: ['Quran', 'Memorization Journal']
+  },
+  {
+    id: '4',
+    title: 'Weekend Family Session',
+    description: 'Family-friendly Quran learning session for parents and children.',
+    instructor: mockInstructor,
+    schedule: {
+      day: 'Saturday',
+      startTime: '10:00',
+      endTime: '11:00',
+      timezone: 'EST'
+    },
+    region: 'North America',
+    levelRange: 'mixed',
+    ageGroup: 'all',
+    maxStudents: 20,
+    enrolledStudents: 15,
+    price: 15,
+    category: 'recitation',
+    status: 'active',
+    zoomMeeting: {
+      id: 'zm4',
+      sessionId: '4',
+      meetingId: '789123456',
+      joinUrl: 'https://zoom.us/j/789123456?pwd=example',
+      hostUrl: 'https://zoom.us/s/789123456?zak=example',
+      password: 'family123',
+      startTime: '2025-09-06T10:00:00Z',
+      duration: 60,
+      recordingEnabled: true,
+      status: 'scheduled',
+      nativeAppLink: 'zoommtg://zoom.us/join?confno=789123456&pwd=family123',
+      webLink: 'https://zoom.us/wc/join/789123456?pwd=family123',
+      generatedAt: '2025-09-06T08:00:00Z',
+      isReady: true
+    },
+    materials: ['Quran', 'Children\'s Activity Sheets']
+  },
+  {
+    id: '5',
+    title: 'Advanced Tajweed Mastery',
+    description: 'Deep dive into advanced Tajweed rules and perfect pronunciation.',
+    instructor: mockInstructor,
+    schedule: {
+      day: 'Thursday',
+      startTime: '21:00',
+      endTime: '22:30',
+      timezone: 'EST'
+    },
+    region: 'North America',
+    levelRange: 'advanced-focus',
+    ageGroup: 'adult',
+    maxStudents: 8,
+    enrolledStudents: 6,
+    price: 45,
+    category: 'tajweed',
+    status: 'active',
+    zoomMeeting: {
+      id: 'zm5',
+      sessionId: '5',
+      meetingId: '321654987',
+      joinUrl: 'https://zoom.us/j/321654987?pwd=example',
+      hostUrl: 'https://zoom.us/s/321654987?zak=example',
+      password: 'advanced123',
+      startTime: '2025-09-05T21:00:00Z',
+      duration: 90,
+      recordingEnabled: true,
+      status: 'scheduled',
+      nativeAppLink: 'zoommtg://zoom.us/join?confno=321654987&pwd=advanced123',
+      webLink: 'https://zoom.us/wc/join/321654987?pwd=advanced123',
+      generatedAt: '2025-09-05T19:00:00Z',
+      isReady: true
+    },
+    materials: ['Quran', 'Advanced Tajweed Manual', 'Audio Recordings']
   }
 ];
 
@@ -173,7 +285,7 @@ const mockRecitationEntries: RecitationEntry[] = [
 
 function App() {
   const [currentPage, setCurrentPage] = useState<Page>('home');
-  const [currentUser, setCurrentUser] = useState<User | null>(null);
+  const { user: currentUser } = useAuth(); // Get user from useAuth hook instead of local state
   const { toasts, removeToast, success, error } = useToast();
 
   const handleSignup = async (userData: SignupFormData) => {
@@ -205,7 +317,7 @@ function App() {
         // Ensure the user object has all required properties for the dashboard
         const userData: User = {
           ...response.data.user,
-          selectedSessions: [],
+          selectedSessions: ['1', '3'], // Give new users sample enrolled sessions
           subscription: {
             id: '1',
             plan: 'free' as const,
@@ -230,7 +342,7 @@ function App() {
           timezone: response.data.user.timezone || 'UTC'
         };
         
-        setCurrentUser(userData);
+        // setCurrentUser(userData); // TODO: Need to update useAuth to handle user updates
         setCurrentPage('student-dashboard');
         success('Welcome to Ismail Academy!', 'Your account has been created successfully.');
         console.log('Registration successful:', response.message);
@@ -246,7 +358,7 @@ function App() {
   };
 
   const handleLogout = () => {
-    setCurrentUser(null);
+    // setCurrentUser(null); // TODO: Use useAuth logout function
     setCurrentPage('home');
   };
 
@@ -264,7 +376,7 @@ function App() {
         ...currentUser,
         selectedSessions: [...currentUser.selectedSessions, sessionId]
       };
-      setCurrentUser(updatedUser);
+      // setCurrentUser(updatedUser); // TODO: Need to update useAuth to handle user updates
     }
   };
 
@@ -292,7 +404,7 @@ function App() {
         ...currentUser,
         selectedSessions: [...currentUser.selectedSessions, payment.sessionId]
       };
-      setCurrentUser(updatedUser);
+      // setCurrentUser(updatedUser); // TODO: Need to update useAuth to handle user updates
     }
   };
 
@@ -323,6 +435,8 @@ function App() {
           onBack={() => setCurrentPage('home')}
           onSignupClick={() => setCurrentPage('signup')}
           onLoginSuccess={() => setCurrentPage('student-dashboard')}
+          onToastSuccess={success}
+          onToastError={error}
         />
       )}
       
@@ -337,7 +451,11 @@ function App() {
         <StudentDashboard
           user={currentUser}
           availableSessions={mockSessions}
-          upcomingSessions={mockSessions.filter(s => currentUser.selectedSessions?.includes(s.id) || false)}
+          upcomingSessions={
+            currentUser.selectedSessions && currentUser.selectedSessions.length > 0
+              ? mockSessions.filter(s => currentUser.selectedSessions?.includes(s.id) || false)
+              : mockSessions.slice(0, 3) // Show first 3 sessions as upcoming for new users
+          }
           notifications={mockNotifications}
           recitationEntries={mockRecitationEntries}
           onJoinSession={handleJoinSession}

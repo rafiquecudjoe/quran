@@ -186,12 +186,12 @@ export const EnhancedSignupForm: React.FC<EnhancedSignupFormProps> = ({
   const renderProgressBar = () => (
     <div className="mb-8">
       <div className="flex items-center justify-between mb-2">
-        <span className="text-sm font-medium text-emerald-600">Step {currentStep} of {totalSteps}</span>
+        <span className="text-sm font-medium text-blue-700">Step {currentStep} of {totalSteps}</span>
         <span className="text-sm text-slate-500">{Math.round((currentStep / totalSteps) * 100)}% Complete</span>
       </div>
       <div className="w-full bg-slate-200 rounded-full h-2">
         <div 
-          className="bg-emerald-600 h-2 rounded-full transition-all duration-300 ease-out"
+          className="bg-blue-700 h-2 rounded-full transition-all duration-300 ease-out"
           style={{ width: `${(currentStep / totalSteps) * 100}%` }}
         />
       </div>
@@ -201,8 +201,8 @@ export const EnhancedSignupForm: React.FC<EnhancedSignupFormProps> = ({
   const renderStep1 = () => (
     <div className="space-y-6">
       <div className="text-center mb-8">
-        <div className="mx-auto w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mb-4">
-          <User className="w-8 h-8 text-emerald-600" />
+        <div className="mx-auto w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mb-4">
+          <User className="w-8 h-8 text-blue-700" />
         </div>
         <h2 className="text-2xl font-bold text-slate-900 mb-2">Create Your Account</h2>
         <p className="text-slate-600">Let's start with your basic information</p>
@@ -217,7 +217,7 @@ export const EnhancedSignupForm: React.FC<EnhancedSignupFormProps> = ({
             type="text"
             value={formData.firstName}
             onChange={(e) => updateFormData('firstName', e.target.value)}
-            className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors ${
+            className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors ${
               errors.firstName ? 'border-red-500' : 'border-slate-300'
             }`}
             placeholder="Enter student first name"
@@ -233,7 +233,7 @@ export const EnhancedSignupForm: React.FC<EnhancedSignupFormProps> = ({
             type="text"
             value={formData.lastName}
             onChange={(e) => updateFormData('lastName', e.target.value)}
-            className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors ${
+            className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors ${
               errors.lastName ? 'border-red-500' : 'border-slate-300'
             }`}
             placeholder="Enter student last name"
@@ -252,7 +252,7 @@ export const EnhancedSignupForm: React.FC<EnhancedSignupFormProps> = ({
             type="email"
             value={formData.email}
             onChange={(e) => updateFormData('email', e.target.value)}
-            className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors ${
+            className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors ${
               errors.email ? 'border-red-500' : 'border-slate-300'
             }`}
             placeholder="Enter your email"
@@ -271,7 +271,7 @@ export const EnhancedSignupForm: React.FC<EnhancedSignupFormProps> = ({
             type={showPassword ? 'text' : 'password'}
             value={formData.password}
             onChange={(e) => updateFormData('password', e.target.value)}
-            className={`w-full pl-10 pr-12 py-3 border rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors ${
+            className={`w-full pl-10 pr-12 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors ${
               errors.password ? 'border-red-500' : 'border-slate-300'
             }`}
             placeholder="Create a password"
@@ -297,7 +297,7 @@ export const EnhancedSignupForm: React.FC<EnhancedSignupFormProps> = ({
             type={showConfirmPassword ? 'text' : 'password'}
             value={formData.confirmPassword}
             onChange={(e) => updateFormData('confirmPassword', e.target.value)}
-            className={`w-full pl-10 pr-12 py-3 border rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors ${
+            className={`w-full pl-10 pr-12 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors ${
               errors.confirmPassword ? 'border-red-500' : 'border-slate-300'
             }`}
             placeholder="Confirm your password"
@@ -318,8 +318,8 @@ export const EnhancedSignupForm: React.FC<EnhancedSignupFormProps> = ({
   const renderStep2 = () => (
     <div className="space-y-6">
       <div className="text-center mb-8">
-        <div className="mx-auto w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mb-4">
-          <Globe className="w-8 h-8 text-emerald-600" />
+        <div className="mx-auto w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mb-4">
+          <Globe className="w-8 h-8 text-blue-700" />
         </div>
         <h2 className="text-2xl font-bold text-slate-900 mb-2">Personal Details</h2>
         <p className="text-slate-600">Help us personalize your learning experience</p>
@@ -349,7 +349,7 @@ export const EnhancedSignupForm: React.FC<EnhancedSignupFormProps> = ({
                 setCountrySearch(formData.country);
                 setShowCountryDropdown(true);
               }}
-              className={`w-full pl-10 pr-10 py-3 border rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors ${
+              className={`w-full pl-10 pr-10 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors ${
                 errors.country ? 'border-red-500' : 'border-slate-300'
               }`}
               placeholder="Search and select your country"
@@ -371,7 +371,7 @@ export const EnhancedSignupForm: React.FC<EnhancedSignupFormProps> = ({
                       type="text"
                       value={countrySearch}
                       onChange={(e) => setCountrySearch(e.target.value)}
-                      className="w-full pl-9 pr-4 py-2 border border-slate-300 rounded focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                      className="w-full pl-9 pr-4 py-2 border border-slate-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                       placeholder="Search countries..."
                     />
                   </div>
@@ -397,8 +397,8 @@ export const EnhancedSignupForm: React.FC<EnhancedSignupFormProps> = ({
                             setFormData(updatedFormData);
                           }
                         }}
-                        className={`w-full text-left px-4 py-2 hover:bg-emerald-50 transition-colors ${
-                          formData.country === country.name ? 'bg-emerald-100 text-emerald-700' : 'text-slate-700'
+                        className={`w-full text-left px-4 py-2 hover:bg-blue-50 transition-colors ${
+                          formData.country === country.name ? 'bg-blue-100 text-blue-800' : 'text-slate-700'
                         }`}
                       >
                         <div className="flex items-center space-x-3">
@@ -431,7 +431,7 @@ export const EnhancedSignupForm: React.FC<EnhancedSignupFormProps> = ({
             type="tel"
             value={formData.telephone}
             onChange={(e) => updateFormData('telephone', e.target.value)}
-            className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors ${
+            className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors ${
               errors.telephone ? 'border-red-500' : 'border-slate-300'
             }`}
             placeholder={selectedCountry ? `${selectedCountry.phoneCode} 123456789` : "+1 (555) 123-4567"}
@@ -492,7 +492,7 @@ export const EnhancedSignupForm: React.FC<EnhancedSignupFormProps> = ({
             value={formData.dateOfBirth}
             onChange={(e) => updateFormData('dateOfBirth', e.target.value)}
             max={new Date().toISOString().split('T')[0]}
-            className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors ${
+            className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors ${
               errors.dateOfBirth ? 'border-red-500' : 'border-slate-300'
             }`}
           />
@@ -520,7 +520,7 @@ export const EnhancedSignupForm: React.FC<EnhancedSignupFormProps> = ({
           <select
             value={formData.quranLevel}
             onChange={(e) => updateFormData('quranLevel', e.target.value)}
-            className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors appearance-none ${
+            className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors appearance-none ${
               errors.quranLevel ? 'border-red-500' : 'border-slate-300'
             }`}
           >
@@ -538,8 +538,8 @@ export const EnhancedSignupForm: React.FC<EnhancedSignupFormProps> = ({
   const renderStep3 = () => (
     <div className="space-y-6">
       <div className="text-center mb-8">
-        <div className="mx-auto w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mb-4">
-          <Users className="w-8 h-8 text-emerald-600" />
+        <div className="mx-auto w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mb-4">
+          <Users className="w-8 h-8 text-blue-700" />
         </div>
         <h2 className="text-2xl font-bold text-slate-900 mb-2">Parent/Guardian Information</h2>
         <p className="text-slate-600">Since you're under 18, we need a parent or guardian's details</p>
@@ -554,7 +554,7 @@ export const EnhancedSignupForm: React.FC<EnhancedSignupFormProps> = ({
             type="text"
             value={formData.parentInfo?.firstName || ''}
             onChange={(e) => updateParentInfo('firstName', e.target.value)}
-            className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors ${
+            className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors ${
               errors.parentFirstName ? 'border-red-500' : 'border-slate-300'
             }`}
             placeholder="Enter first name"
@@ -570,7 +570,7 @@ export const EnhancedSignupForm: React.FC<EnhancedSignupFormProps> = ({
             type="text"
             value={formData.parentInfo?.lastName || ''}
             onChange={(e) => updateParentInfo('lastName', e.target.value)}
-            className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors ${
+            className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors ${
               errors.parentLastName ? 'border-red-500' : 'border-slate-300'
             }`}
             placeholder="Enter last name"
@@ -589,7 +589,7 @@ export const EnhancedSignupForm: React.FC<EnhancedSignupFormProps> = ({
             type="email"
             value={formData.parentInfo?.email || ''}
             onChange={(e) => updateParentInfo('email', e.target.value)}
-            className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors ${
+            className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors ${
               errors.parentEmail ? 'border-red-500' : 'border-slate-300'
             }`}
             placeholder="parent@example.com"
@@ -608,7 +608,7 @@ export const EnhancedSignupForm: React.FC<EnhancedSignupFormProps> = ({
             type="tel"
             value={formData.parentInfo?.telephone || ''}
             onChange={(e) => updateParentInfo('telephone', e.target.value)}
-            className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors ${
+            className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors ${
               errors.parentTelephone ? 'border-red-500' : 'border-slate-300'
             }`}
             placeholder="+1 (555) 123-4567"
@@ -624,7 +624,7 @@ export const EnhancedSignupForm: React.FC<EnhancedSignupFormProps> = ({
         <select
           value={formData.parentInfo?.relationship || ''}
           onChange={(e) => updateParentInfo('relationship', e.target.value)}
-          className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors appearance-none ${
+          className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors appearance-none ${
             errors.parentRelationship ? 'border-red-500' : 'border-slate-300'
           }`}
         >
@@ -639,7 +639,7 @@ export const EnhancedSignupForm: React.FC<EnhancedSignupFormProps> = ({
   );
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-teal-50 to-cyan-50 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-slate-50 to-cyan-50 flex items-center justify-center p-4">
       <Card className="w-full max-w-md shadow-xl">
         <CardHeader className="pb-2">
           {renderProgressBar()}
@@ -672,7 +672,7 @@ export const EnhancedSignupForm: React.FC<EnhancedSignupFormProps> = ({
 
             <Button
               onClick={nextStep}
-              className="flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700"
+              className="flex items-center gap-2 bg-blue-700 hover:bg-blue-800"
             >
               {currentStep === totalSteps ? (
                 <>
@@ -692,9 +692,9 @@ export const EnhancedSignupForm: React.FC<EnhancedSignupFormProps> = ({
             <div className="text-center pt-4 border-t border-slate-200">
               <p className="text-sm text-slate-600">
                 By creating an account, you agree to our{' '}
-                <a href="#" className="text-emerald-600 hover:underline">Terms of Service</a>
+                <a href="#" className="text-blue-700 hover:underline">Terms of Service</a>
                 {' '}and{' '}
-                <a href="#" className="text-emerald-600 hover:underline">Privacy Policy</a>
+                <a href="#" className="text-blue-700 hover:underline">Privacy Policy</a>
               </p>
             </div>
           )}

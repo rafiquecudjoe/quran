@@ -26,32 +26,32 @@ interface LandingPageProps {
 export const LandingPage: React.FC<LandingPageProps> = ({ onGetStarted, onLogin, onWatchSalatVideos }) => {
   const features = [
     {
-      icon: <Video className="w-6 h-6 text-emerald-600" />,
+      icon: <Video className="w-6 h-6 text-blue-700" />,
       title: "Live Zoom Sessions",
       description: "Interactive live classes with qualified Quran teachers through Zoom video calls"
     },
     {
-      icon: <Users className="w-6 h-6 text-emerald-600" />,
+      icon: <Users className="w-6 h-6 text-blue-700" />,
       title: "Expert Instructors",
       description: "Learn from certified Quran teachers with years of teaching experience"
     },
     {
-      icon: <Clock className="w-6 h-6 text-emerald-600" />,
+      icon: <Clock className="w-6 h-6 text-blue-700" />,
       title: "Time Zone Based Sessions",
       description: "Join sessions scheduled for your time zone with students of all skill levels"
     },
     {
-      icon: <Award className="w-6 h-6 text-emerald-600" />,
+      icon: <Award className="w-6 h-6 text-blue-700" />,
       title: "Progress Tracking",
       description: "Monitor your learning journey with detailed progress reports and achievements"
     },
     {
-      icon: <Globe className="w-6 h-6 text-emerald-600" />,
+      icon: <Globe className="w-6 h-6 text-blue-700" />,
       title: "Global Community",
       description: "Join students from around the world in your Quran learning journey"
     },
     {
-      icon: <BookOpen className="w-6 h-6 text-emerald-600" />,
+      icon: <BookOpen className="w-6 h-6 text-blue-700" />,
       title: "Mixed-Level Sessions",
       description: "Learn alongside students of different levels in time zone-based classes"
     }
@@ -118,28 +118,35 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onGetStarted, onLogin,
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-emerald-50">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
       {/* Header */}
-      <header className="bg-white/80 backdrop-blur-sm border-b border-slate-200 sticky top-0 z-50">
+      <header className="bg-white/95 backdrop-blur-sm border-b border-slate-200 sticky top-0 z-50 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 bg-gradient-to-br from-emerald-600 to-teal-600 rounded-lg flex items-center justify-center">
-                <BookOpen className="w-6 h-6 text-white" />
+          <div className="flex justify-between items-center h-20">
+            <div className="flex items-center space-x-4">
+              <div className="w-20 h-20 rounded-xl flex items-center justify-center shadow-lg bg-white border border-slate-100">
+                <img 
+                  src="/logos/ismail-academy-logo.jpeg" 
+                  alt="Ismail Academy" 
+                  className="w-18 h-18 object-contain rounded-xl"
+                />
               </div>
-              <h1 className="text-xl font-bold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">
-                Ismail Academy
-              </h1>
+              <div>
+                <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-800 to-blue-900 bg-clip-text text-transparent">
+                  Ismail Academy
+                </h1>
+                <p className="text-sm text-slate-600 font-medium">Learn Quran Online</p>
+              </div>
             </div>
             <div className="flex items-center space-x-4">
-              <Button variant="ghost" onClick={onWatchSalatVideos} className="text-blue-600 hover:text-blue-700">
+              <Button variant="ghost" onClick={onWatchSalatVideos} className="text-blue-700 hover:text-blue-800 hover:bg-blue-50">
                 <Play className="w-4 h-4 mr-2" />
                 Watch Salat Videos
               </Button>
-              <Button variant="ghost" onClick={onLogin}>
+              <Button variant="ghost" onClick={onLogin} className="text-slate-700 hover:text-slate-900 hover:bg-slate-50">
                 Sign In
               </Button>
-              <Button onClick={onGetStarted}>
+              <Button onClick={onGetStarted} className="bg-gradient-to-r from-blue-700 to-blue-800 hover:from-blue-800 hover:to-blue-900 text-white shadow-md">
                 Get Started
               </Button>
             </div>
@@ -152,13 +159,13 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onGetStarted, onLogin,
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="lg:grid lg:grid-cols-2 lg:gap-12 items-center">
             <div className="mb-12 lg:mb-0">
-              <div className="inline-flex items-center px-4 py-2 bg-emerald-100 text-emerald-800 rounded-full text-sm font-medium mb-6">
+              <div className="inline-flex items-center px-4 py-2 bg-blue-100 text-blue-800 rounded-full text-sm font-medium mb-6">
                 <Star className="w-4 h-4 mr-2" />
                 Join 10,000+ students worldwide
               </div>
               <h1 className="text-4xl lg:text-6xl font-bold text-slate-900 leading-tight mb-6">
                 Learn the Holy{' '}
-                <span className="bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">
+                <span className="bg-gradient-to-r from-blue-700 to-blue-900 bg-clip-text text-transparent">
                   Quran
                 </span>{' '}
                 Online
@@ -169,11 +176,11 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onGetStarted, onLogin,
                 absolutely free</strong> - no registration required!
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
-                <Button size="lg" onClick={onGetStarted} className="px-8">
+                <Button size="lg" onClick={onGetStarted} className="px-8 bg-gradient-to-r from-blue-700 to-blue-800 hover:from-blue-800 hover:to-blue-900 text-white shadow-lg">
                   Start Learning Today
                   <ArrowRight className="w-5 h-5 ml-2" />
                 </Button>
-                <Button variant="outline" size="lg" className="px-8" onClick={onWatchSalatVideos}>
+                <Button variant="outline" size="lg" className="px-8 border-blue-300 text-blue-700 hover:bg-blue-50 hover:border-blue-400" onClick={onWatchSalatVideos}>
                   <Play className="w-5 h-5 mr-2" />
                   Free Salat Videos
                 </Button>
@@ -183,8 +190,8 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onGetStarted, onLogin,
               <div className="relative z-10 bg-white rounded-2xl shadow-2xl p-8">
                 <div className="flex items-center justify-between mb-6">
                   <div className="flex items-center space-x-3">
-                    <div className="w-12 h-12 bg-emerald-100 rounded-full flex items-center justify-center">
-                      <User className="w-6 h-6 text-emerald-600" />
+                    <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
+                      <User className="w-6 h-6 text-blue-700" />
                     </div>
                     <div>
                       <h3 className="font-semibold text-slate-900">Muallim Adubofour Ismael</h3>
@@ -195,7 +202,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onGetStarted, onLogin,
                 </div>
                 <div className="bg-slate-100 rounded-lg p-4 mb-4">
                   <div className="text-center">
-                    <div className="w-16 h-16 bg-emerald-600 rounded-full flex items-center justify-center mx-auto mb-3">
+                    <div className="w-16 h-16 bg-blue-700 rounded-full flex items-center justify-center mx-auto mb-3">
                       <Play className="w-8 h-8 text-white" />
                     </div>
                     <p className="text-sm text-slate-600">Tajweed Session in Progress</p>
@@ -212,7 +219,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onGetStarted, onLogin,
                   </span> */}
                 </div>
               </div>
-              <div className="absolute -top-4 -right-4 w-72 h-72 bg-gradient-to-br from-emerald-200 to-teal-200 rounded-full opacity-20"></div>
+              <div className="absolute -top-4 -right-4 w-72 h-72 bg-gradient-to-br from-blue-200 to-blue-300 rounded-full opacity-20"></div>
               <div className="absolute -bottom-4 -left-4 w-64 h-64 bg-gradient-to-br from-blue-200 to-indigo-200 rounded-full opacity-20"></div>
             </div>
           </div>
@@ -235,7 +242,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onGetStarted, onLogin,
             {features.map((feature, index) => (
               <Card key={index} variant="elevated" className="hover:shadow-xl transition-all duration-300">
                 <CardContent className="p-8 text-center">
-                  <div className="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                  <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-6">
                     {feature.icon}
                   </div>
                   <h3 className="text-xl font-semibold text-slate-900 mb-4">
@@ -252,10 +259,10 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onGetStarted, onLogin,
       </section>
 
       {/* Time Zone Sessions Explanation */}
-      <section className="py-24 bg-gradient-to-br from-emerald-50 to-teal-50">
+      <section className="py-24 bg-gradient-to-br from-blue-50 to-slate-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <div className="inline-flex items-center px-4 py-2 bg-emerald-100 text-emerald-800 rounded-full text-sm font-medium mb-6">
+            <div className="inline-flex items-center px-4 py-2 bg-blue-100 text-blue-800 rounded-full text-sm font-medium mb-6">
               <Globe className="w-4 h-4 mr-2" />
               Global Learning Community
             </div>
@@ -271,8 +278,8 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onGetStarted, onLogin,
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div className="space-y-8">
               <div className="flex items-start space-x-4">
-                <div className="w-12 h-12 bg-emerald-100 rounded-full flex items-center justify-center flex-shrink-0">
-                  <Globe className="w-6 h-6 text-emerald-600" />
+                <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0">
+                  <Globe className="w-6 h-6 text-blue-700" />
                 </div>
                 <div>
                   <h3 className="text-xl font-semibold text-slate-900 mb-2">
@@ -286,8 +293,8 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onGetStarted, onLogin,
               </div>
               
               <div className="flex items-start space-x-4">
-                <div className="w-12 h-12 bg-emerald-100 rounded-full flex items-center justify-center flex-shrink-0">
-                  <Users className="w-6 h-6 text-emerald-600" />
+                <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0">
+                  <Users className="w-6 h-6 text-blue-700" />
                 </div>
                 <div>
                   <h3 className="text-xl font-semibold text-slate-900 mb-2">
@@ -302,8 +309,8 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onGetStarted, onLogin,
               </div>
               
               <div className="flex items-start space-x-4">
-                <div className="w-12 h-12 bg-emerald-100 rounded-full flex items-center justify-center flex-shrink-0">
-                  <Clock className="w-6 h-6 text-emerald-600" />
+                <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0">
+                  <Clock className="w-6 h-6 text-blue-700" />
                 </div>
                 <div>
                   <h3 className="text-xl font-semibold text-slate-900 mb-2">
@@ -327,21 +334,21 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onGetStarted, onLogin,
                     <div className="font-semibold text-slate-900">Session 1</div>
                     <div className="text-sm text-slate-600">Evening</div>
                   </div>
-                  <div className="text-emerald-600 font-semibold">7:00 PM - 8:00 PM</div>
+                  <div className="text-blue-700 font-semibold">7:00 PM - 8:00 PM</div>
                 </div>
                 <div className="flex justify-between items-center p-4 bg-slate-50 rounded-lg">
                   <div>
                     <div className="font-semibold text-slate-900">Session 2</div>
                     <div className="text-sm text-slate-600">After Work Hours</div>
                   </div>
-                  <div className="text-emerald-600 font-semibold">8:00 PM - 9:00 PM</div>
+                  <div className="text-blue-700 font-semibold">8:00 PM - 9:00 PM</div>
                 </div>
                 <div className="flex justify-between items-center p-4 bg-slate-50 rounded-lg">
                   <div>
                     <div className="font-semibold text-slate-900">Section 3</div>
                     <div className="text-sm text-slate-600">Weekend Mornings</div>
                   </div>
-                  <div className="text-emerald-600 font-semibold">10:00 AM - 11:00 AM</div>
+                  <div className="text-blue-700 font-semibold">10:00 AM - 11:00 AM</div>
                 </div>
               </div>
             </div>
@@ -422,7 +429,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onGetStarted, onLogin,
       </section>
 
       {/* Testimonials Section */}
-      <section className="py-24 bg-gradient-to-br from-emerald-50 to-teal-50">
+      <section className="py-24 bg-gradient-to-br from-blue-50 to-slate-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl lg:text-4xl font-bold text-slate-900 mb-4">
@@ -479,7 +486,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onGetStarted, onLogin,
                 key={index} 
                 variant={plan.popular ? "elevated" : "default"}
                 className={`relative hover:shadow-xl transition-all duration-300 ${
-                  plan.popular ? 'ring-2 ring-emerald-500' : ''
+                  plan.popular ? 'ring-2 ring-blue-500' : ''
                 } ${plan.isFree ? 'bg-gradient-to-br from-blue-50 to-indigo-50' : ''}`}
               >
                 {plan.popular && (
@@ -501,7 +508,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onGetStarted, onLogin,
                   <ul className="space-y-4 mb-8">
                     {plan.features.map((feature, featureIndex) => (
                       <li key={featureIndex} className="flex items-center">
-                        <CheckCircle className="w-5 h-5 text-emerald-600 mr-3" />
+                        <CheckCircle className="w-5 h-5 text-blue-700 mr-3" />
                         <span className="text-slate-600">{feature}</span>
                       </li>
                     ))}
@@ -521,12 +528,12 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onGetStarted, onLogin,
       </section>
 
       {/* CTA Section */}
-      <section className="py-24 bg-gradient-to-r from-emerald-600 to-teal-600">
+      <section className="py-24 bg-gradient-to-r from-blue-700 to-blue-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl lg:text-4xl font-bold text-white mb-6">
             Ready to Begin Your Quran Learning Journey?
           </h2>
-          <p className="text-xl text-emerald-100 mb-8 max-w-3xl mx-auto">
+          <p className="text-xl text-blue-100 mb-8 max-w-3xl mx-auto">
             Join our community of dedicated learners and start your transformation today. 
             Your first session is just a click away.
           </p>
@@ -543,7 +550,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onGetStarted, onLogin,
             <Button 
               size="lg" 
               variant="outline" 
-              className="px-8 border-white text-white hover:bg-white hover:text-emerald-600"
+              className="px-8 border-white text-white hover:bg-white hover:text-blue-700"
             >
              Join the academy
             </Button>
@@ -557,7 +564,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onGetStarted, onLogin,
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div className="col-span-1 md:col-span-2">
               <div className="flex items-center space-x-3 mb-6">
-                <div className="w-10 h-10 bg-gradient-to-br from-emerald-600 to-teal-600 rounded-lg flex items-center justify-center">
+                <div className="w-10 h-10 bg-gradient-to-br from-blue-700 to-blue-800 rounded-lg flex items-center justify-center">
                   <BookOpen className="w-6 h-6 text-white" />
                 </div>
                 <h3 className="text-xl font-bold">Ismail Academy</h3>

@@ -113,21 +113,55 @@ class AuthService {
         try {
             const response = await makeAPIRequest('customers/login', 'POST', credentials);
 
-            if (response.status === 200 && response.data) {
+            // Check if there was a network error or API error
+            if (response.success === false) {
+                return {
+                    success: false,
+                    message: response.message || 'Login failed',
+                    error: response.error || response.message,
+                };
+            }
+
+            // Check for successful login response (backend returns { message, data } without status field)
+            if (response.data && response.message) {
                 // Store tokens and user data
                 localStorage.setItem('quran-academy-token', response.data.accessToken);
                 localStorage.setItem('quran-academy-refresh-token', response.data.refreshToken);
-                localStorage.setItem('quran-academy-user', JSON.stringify(response.data.userData));
+                
+                // Add default progress data if missing
+                const userData = {
+                    ...response.data.userData,
+                    progress: response.data.userData.progress || {
+                        totalHours: 0,
+                        completedLessons: 0,
+                        currentSurah: 'Al-Fatiha',
+                        memorizedVerses: 0,
+                        achievements: [],
+                        weeklyGoal: 5,
+                        weeklyProgress: 0
+                    },
+                    selectedSessions: response.data.userData.selectedSessions || [],
+                    subscription: response.data.userData.subscription || { 
+                        plan: 'free', 
+                        status: 'active', 
+                        startDate: new Date().toISOString(),
+                        endDate: null 
+                    },
+                    dateJoined: response.data.userData.dateJoined || new Date().toISOString()
+                };
+                
+                localStorage.setItem('quran-academy-user', JSON.stringify(userData));
 
-                return {
+                const successResponse = {
                     success: true,
                     message: response.message || 'Login successful',
                     data: {
-                        user: response.data.userData,
+                        user: userData,
                         accessToken: response.data.accessToken,
                         refreshToken: response.data.refreshToken,
                     },
                 };
+                return successResponse;
             } else {
                 return {
                     success: false,
@@ -236,7 +270,36 @@ class AuthService {
     getCurrentUser(): User | null {
         try {
             const userData = localStorage.getItem('quran-academy-user');
-            return userData ? JSON.parse(userData) : null;
+            if (!userData) return null;
+            
+            const user = JSON.parse(userData);
+            
+            // Add default progress data if missing (for backward compatibility)
+            if (!user.progress) {
+                user.progress = {
+                    totalHours: 0,
+                    completedLessons: 0,
+                    currentSurah: 'Al-Fatiha',
+                    memorizedVerses: 0,
+                    achievements: [],
+                    weeklyGoal: 5,
+                    weeklyProgress: 0
+                };
+            }
+            
+            // Add other missing fields
+            if (!user.selectedSessions) user.selectedSessions = [];
+            if (!user.subscription) {
+                user.subscription = { 
+                    plan: 'free', 
+                    status: 'active', 
+                    startDate: new Date().toISOString(),
+                    endDate: null 
+                };
+            }
+            if (!user.dateJoined) user.dateJoined = new Date().toISOString();
+            
+            return user;
         } catch (error) {
             console.error('Error parsing user data:', error);
             return null;

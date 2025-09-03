@@ -79,7 +79,7 @@ export const PhoneInput: React.FC<PhoneInputProps> = ({
             ${countryCode ? 'pl-24' : 'pl-12'}
             ${error 
               ? 'border-red-300 focus:border-red-500 focus:ring-red-500' 
-              : 'border-slate-300 focus:border-emerald-500 focus:ring-emerald-500'
+              : 'border-slate-300 focus:border-blue-500 focus:ring-blue-500'
             }
             ${disabled 
               ? 'bg-slate-100 text-slate-500 cursor-not-allowed' 

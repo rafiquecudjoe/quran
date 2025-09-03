@@ -11,12 +11,16 @@ interface LoginFormProps {
   onBack: () => void;
   onSignupClick: () => void;
   onLoginSuccess?: () => void;
+  onToastSuccess?: (title: string, message?: string) => void;
+  onToastError?: (title: string, message?: string) => void;
 }
 
 export const LoginForm: React.FC<LoginFormProps> = ({
   onBack,
   onSignupClick,
-  onLoginSuccess
+  onLoginSuccess,
+  onToastSuccess,
+  onToastError
 }) => {
   const { login, isLoading } = useAuth();
   const [formData, setFormData] = useState<LoginRequest>({
@@ -58,15 +62,38 @@ export const LoginForm: React.FC<LoginFormProps> = ({
       const response = await login(formData);
       
       if (response.success) {
+        // Show success toast with exact backend message
+        const successMessage = response.message || 'Login successful';
+        onToastSuccess?.(successMessage);
+        
         // Login successful, call success callback
         onLoginSuccess?.();
       } else {
+        // Show error toast with exact backend response
+        const errorMessage = response.message || response.error || 'Login Failed';
+        onToastError?.(errorMessage);
+        
         // Parse validation errors from backend response
         const validationErrors = parseValidationErrors(response.message || response.error || '');
         setErrors(validationErrors);
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error('Login error:', error);
+      
+      // Show error toast with connection error message
+      let errorMessage = 'Unable to connect to server. Please check your internet connection and try again.';
+      
+      // Try to extract meaningful error message from the error object
+      if (error?.response?.data?.message) {
+        errorMessage = error.response.data.message;
+      } else if (error?.message) {
+        errorMessage = error.message;
+      } else if (typeof error === 'string') {
+        errorMessage = error;
+      }
+      
+      onToastError?.(errorMessage);
+      
       // Handle unexpected errors
       setErrors({ general: 'An unexpected error occurred. Please try again.' });
     }
@@ -91,7 +118,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({
   }, [rememberMe]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-emerald-50 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 flex items-center justify-center p-4">
       <div className="w-full max-w-md">
         <button
           onClick={onBack}
@@ -103,7 +130,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({
         
         <Card variant="elevated">
           <CardHeader className="text-center">
-            <div className="w-16 h-16 bg-gradient-to-br from-emerald-600 to-teal-600 rounded-full flex items-center justify-center mx-auto mb-4">
+            <div className="w-16 h-16 bg-gradient-to-br from-blue-700 to-blue-800 rounded-full flex items-center justify-center mx-auto mb-4">
               <Mail className="w-8 h-8 text-white" />
             </div>
             <h1 className="text-2xl font-bold text-slate-900 mb-2">Welcome Back</h1>
@@ -153,11 +180,11 @@ export const LoginForm: React.FC<LoginFormProps> = ({
                     type="checkbox"
                     checked={rememberMe}
                     onChange={(e) => setRememberMe(e.target.checked)}
-                    className="w-4 h-4 text-emerald-600 bg-white border-slate-300 rounded focus:ring-emerald-500 focus:ring-2"
+                    className="w-4 h-4 text-blue-700 bg-white border-slate-300 rounded focus:ring-blue-500 focus:ring-2"
                   />
                   <span className="ml-2 text-sm text-slate-600">Remember me</span>
                 </label>
-                <a href="#" className="text-sm text-emerald-600 hover:text-emerald-700">
+                <a href="#" className="text-sm text-blue-700 hover:text-blue-800">
                   Forgot password?
                 </a>
               </div>
@@ -178,7 +205,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({
                 Don't have an account?{' '}
                 <button
                   onClick={onSignupClick}
-                  className="text-emerald-600 hover:text-emerald-700 font-medium"
+                  className="text-blue-700 hover:text-blue-800 font-medium"
                 >
                   Sign up
                 </button>

@@ -80,7 +80,7 @@ export const CountrySelect: React.FC<CountrySelectProps> = ({
           transition-all duration-200 bg-white
           ${error 
             ? 'border-red-300 focus:border-red-500 focus:ring-red-500' 
-            : 'border-slate-300 focus:border-emerald-500 focus:ring-emerald-500'
+            : 'border-slate-300 focus:border-blue-500 focus:ring-blue-500'
           }
           ${disabled 
             ? 'bg-slate-100 text-slate-500 cursor-not-allowed' 
@@ -122,7 +122,7 @@ export const CountrySelect: React.FC<CountrySelectProps> = ({
                 placeholder="Search countries..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-md focus:outline-none focus:border-emerald-500"
+                className="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-md focus:outline-none focus:border-blue-500"
               />
             </div>
           </div>
@@ -149,10 +149,10 @@ export const CountrySelect: React.FC<CountrySelectProps> = ({
                   type="button"
                   onClick={() => handleSelect(country)}
                   className={`
-                    w-full px-4 py-3 text-left hover:bg-emerald-50 transition-colors
+                    w-full px-4 py-3 text-left hover:bg-blue-50 transition-colors
                     flex items-center
                     ${selectedCountry?.code === country.code 
-                      ? 'bg-emerald-50 text-emerald-900' 
+                      ? 'bg-blue-50 text-blue-900' 
                       : 'text-slate-900'
                     }
                   `}

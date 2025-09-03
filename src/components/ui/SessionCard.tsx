@@ -92,19 +92,19 @@ export const SessionCard: React.FC<SessionCardProps> = ({
         
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center space-x-2">
-            <div className="w-8 h-8 bg-emerald-100 rounded-full flex items-center justify-center">
-              <User className="w-4 h-4 text-emerald-600" />
+            <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+              <User className="w-4 h-4 text-blue-700" />
             </div>
             <span className="text-sm text-slate-600">{session.instructor.name}</span>
           </div>
-          <span className="text-lg font-bold text-emerald-600">${session.price}</span>
+          <span className="text-lg font-bold text-blue-700">${session.price}</span>
         </div>
 
         {/* Progress bar for enrollment */}
         <div className="mb-4">
           <div className="bg-slate-200 rounded-full h-2">
             <div 
-              className="bg-emerald-500 h-2 rounded-full" 
+              className="bg-blue-500 h-2 rounded-full" 
               style={{ width: `${(session.enrolledStudents / session.maxStudents) * 100}%` }}
             />
           </div>

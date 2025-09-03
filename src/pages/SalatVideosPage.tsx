@@ -120,7 +120,7 @@ export const SalatVideosPage: React.FC<SalatVideosPageProps> = ({ onBack }) => {
       asr: 'bg-orange-100 text-orange-800',
       maghrib: 'bg-red-100 text-red-800',
       isha: 'bg-purple-100 text-purple-800',
-      general: 'bg-green-100 text-green-800'
+      general: 'bg-blue-100 text-blue-800'
     };
     return colors[category as keyof typeof colors] || 'bg-gray-100 text-gray-800';
   };
@@ -133,14 +133,14 @@ export const SalatVideosPage: React.FC<SalatVideosPageProps> = ({ onBack }) => {
 
   if (selectedVideo) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-emerald-50">
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
         {/* Header */}
         <header className="bg-white shadow-sm border-b border-slate-200">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex justify-between items-center h-16">
               <button
                 onClick={() => setSelectedVideo(null)}
-                className="text-emerald-600 hover:text-emerald-700 font-medium"
+                className="text-blue-700 hover:text-blue-800 font-medium"
               >
                 ← Back to Videos
               </button>
@@ -200,7 +200,7 @@ export const SalatVideosPage: React.FC<SalatVideosPageProps> = ({ onBack }) => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-emerald-50">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
       {/* Header */}
       <header className="bg-white shadow-sm border-b border-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -235,7 +235,7 @@ export const SalatVideosPage: React.FC<SalatVideosPageProps> = ({ onBack }) => {
               <select
                 value={selectedCategory}
                 onChange={(e) => setSelectedCategory(e.target.value)}
-                className="w-full px-3 py-2 border border-slate-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                className="w-full px-3 py-2 border border-slate-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
                 {categories.map(category => (
                   <option key={category.value} value={category.value}>
