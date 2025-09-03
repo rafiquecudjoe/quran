@@ -54,9 +54,16 @@ export const Toast: React.FC<ToastProps> = ({
   return (
     <div
       className={cn(
-        'max-w-sm w-full bg-white shadow-lg rounded-lg pointer-events-auto border-l-4 transform transition-all duration-300 ease-in-out',
+        // Base styles
+        'w-full bg-white shadow-lg rounded-lg pointer-events-auto border-l-4',
+        // Animation styles
+        'transform transition-all duration-300 ease-in-out',
+        // Color styles
         colorClasses[type],
-        isVisible ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0'
+        // Visibility styles
+        isVisible 
+          ? 'translate-x-0 opacity-100' 
+          : 'translate-x-full opacity-0'
       )}
     >
       <div className="p-4">
@@ -64,19 +71,20 @@ export const Toast: React.FC<ToastProps> = ({
           <div className={cn('flex-shrink-0', iconColorClasses[type])}>
             {icons[type]}
           </div>
-          <div className="ml-3 w-0 flex-1">
-            <p className="text-sm font-medium">{title}</p>
+          <div className="ml-3 w-0 flex-1 min-w-0">
+            <p className="text-sm font-medium break-words">{title}</p>
             {message && (
-              <p className="mt-1 text-sm opacity-90">{message}</p>
+              <p className="mt-1 text-sm opacity-90 break-words">{message}</p>
             )}
           </div>
           <div className="ml-4 flex-shrink-0 flex">
             <button
-              className="inline-flex text-gray-400 hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500"
+              className="inline-flex text-gray-400 hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500 rounded-md p-1"
               onClick={() => {
                 setIsVisible(false);
                 setTimeout(() => onClose(id), 300);
               }}
+              aria-label="Close notification"
             >
               <X className="w-4 h-4" />
             </button>
@@ -103,7 +111,7 @@ export const ToastContainer: React.FC<ToastContainerProps> = ({
   onRemoveToast
 }) => {
   return (
-    <div className="fixed top-4 right-4 z-50 flex flex-col space-y-2">
+    <div className="fixed top-4 right-4 left-4 sm:left-auto z-50 flex flex-col space-y-2">
       {toasts.map((toast) => (
         <Toast
           key={toast.id}

@@ -149,10 +149,11 @@ class AuthService {
     async register(userData: RegisterRequest): Promise<AuthResponse> {
         try {
             const response = await makeAPIRequest('customers/register', 'POST', userData);
-            
-            console.log('Auth Service - Raw response:', response);
 
-            if (response.status === 201 && response.data) {
+            // Check if registration was successful
+            // The makeAPIRequest returns the JSON response body when the HTTP status is successful (200-299)
+            // If we get here, it means the HTTP request was successful
+            if (response.data) {
                 // Store tokens and user data
                 localStorage.setItem('quran-academy-token', response.data.accessToken);
                 localStorage.setItem('quran-academy-refresh-token', response.data.refreshToken);
@@ -168,7 +169,6 @@ class AuthService {
                     },
                 };
             } else {
-                console.log('Auth Service - Registration failed, response status:', response.status);
                 return {
                     success: false,
                     message: response.message || 'Registration failed',
