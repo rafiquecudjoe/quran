@@ -127,7 +127,7 @@ class AuthService {
                 // Store tokens and user data
                 localStorage.setItem('quran-academy-token', response.data.accessToken);
                 localStorage.setItem('quran-academy-refresh-token', response.data.refreshToken);
-                
+
                 // Add default progress data if missing
                 const userData = {
                     ...response.data.userData,
@@ -141,15 +141,15 @@ class AuthService {
                         weeklyProgress: 0
                     },
                     selectedSessions: response.data.userData.selectedSessions || [],
-                    subscription: response.data.userData.subscription || { 
-                        plan: 'free', 
-                        status: 'active', 
+                    subscription: response.data.userData.subscription || {
+                        plan: 'free',
+                        status: 'active',
                         startDate: new Date().toISOString(),
-                        endDate: null 
+                        endDate: null
                     },
                     dateJoined: response.data.userData.dateJoined || new Date().toISOString()
                 };
-                
+
                 localStorage.setItem('quran-academy-user', JSON.stringify(userData));
 
                 const successResponse = {
@@ -271,9 +271,9 @@ class AuthService {
         try {
             const userData = localStorage.getItem('quran-academy-user');
             if (!userData) return null;
-            
+
             const user = JSON.parse(userData);
-            
+
             // Add default progress data if missing (for backward compatibility)
             if (!user.progress) {
                 user.progress = {
@@ -286,19 +286,19 @@ class AuthService {
                     weeklyProgress: 0
                 };
             }
-            
+
             // Add other missing fields
             if (!user.selectedSessions) user.selectedSessions = [];
             if (!user.subscription) {
-                user.subscription = { 
-                    plan: 'free', 
-                    status: 'active', 
+                user.subscription = {
+                    plan: 'free',
+                    status: 'active',
                     startDate: new Date().toISOString(),
-                    endDate: null 
+                    endDate: null
                 };
             }
             if (!user.dateJoined) user.dateJoined = new Date().toISOString();
-            
+
             return user;
         } catch (error) {
             console.error('Error parsing user data:', error);

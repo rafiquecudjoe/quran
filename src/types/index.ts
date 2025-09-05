@@ -87,7 +87,7 @@ export interface Session {
     enrolledStudents: number;
     price: number;
     category: 'recitation' | 'memorization' | 'tajweed' | 'translation' | 'islamic-studies';
-    status: 'active' | 'inactive' | 'full' | 'cancelled';
+    status: 'active' | 'inactive' | 'full' | 'cancelled' | 'in-progress' | 'ended';
     zoomMeeting?: ZoomMeeting;
     materials: string[];
 }

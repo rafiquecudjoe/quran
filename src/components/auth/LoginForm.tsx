@@ -5,12 +5,13 @@ import { Input } from '../ui/Input';
 import { Card, CardContent, CardHeader } from '../ui/Card';
 import { useAuth } from '../../hooks/useAuth';
 import { LoginRequest } from '../../services/authService';
+import { User } from '../../types';
 import { parseValidationErrors, clearFieldError, FormErrors } from '../../utils/validationUtils';
 
 interface LoginFormProps {
   onBack: () => void;
   onSignupClick: () => void;
-  onLoginSuccess?: () => void;
+  onLoginSuccess?: (user?: User) => void;
   onToastSuccess?: (title: string, message?: string) => void;
   onToastError?: (title: string, message?: string) => void;
 }
@@ -66,8 +67,12 @@ export const LoginForm: React.FC<LoginFormProps> = ({
         const successMessage = response.message || 'Login successful';
         onToastSuccess?.(successMessage);
         
-        // Login successful, call success callback
-        onLoginSuccess?.();
+        // Login successful, call success callback with user data
+        if (response.data?.user) {
+          onLoginSuccess?.(response.data.user);
+        } else {
+          onLoginSuccess?.();
+        }
       } else {
         // Show error toast with exact backend response
         const errorMessage = response.message || response.error || 'Login Failed';

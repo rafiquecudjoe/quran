@@ -122,7 +122,7 @@ export const UpcomingSessions: React.FC<UpcomingSessionsProps> = ({
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <h2 className="text-xl font-semibold text-slate-900">Upcoming Sessions</h2>
-        <Badge variant="info">{sessions.length} enrolled</Badge>
+        <Badge variant="info">{sessions.length} upcoming</Badge>
       </div>
 
       <div className="space-y-4">

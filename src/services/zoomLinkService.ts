@@ -149,6 +149,33 @@ export class ZoomLinkService {
         message: string;
         canJoin: boolean;
     } {
+        // If session status is 'in-progress', treat it as live regardless of time
+        if (session.status === 'in-progress') {
+            return {
+                status: 'live',
+                message: 'Session in progress - Join now',
+                canJoin: true
+            };
+        }
+
+        // If session status is 'ended', treat it as ended
+        if (session.status === 'ended') {
+            return {
+                status: 'ended',
+                message: 'Session ended',
+                canJoin: false
+            };
+        }
+
+        // If session status is 'cancelled', treat it as ended
+        if (session.status === 'cancelled') {
+            return {
+                status: 'ended',
+                message: 'Session cancelled',
+                canJoin: false
+            };
+        }
+
         if (!session.zoomMeeting) {
             return {
                 status: 'upcoming',

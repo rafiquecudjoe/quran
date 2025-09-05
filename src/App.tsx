@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import { LandingPage } from './pages/LandingPage';
 import { SalatVideosPage } from './pages/SalatVideosPage';
 import { LoginForm } from './components/auth/LoginForm';
@@ -10,8 +10,6 @@ import { User, Session, Instructor, Notification, Payment, RecitationEntry, Sign
 import { authService, RegisterRequest } from './services/authService';
 import { useAuth } from './hooks/useAuth';
 import { useToast } from './hooks/useToast';
-
-type Page = 'home' | 'login' | 'signup' | 'student-dashboard' | 'instructor-dashboard' | 'salat-videos';
 
 // Mock data for demonstration (will be replaced with real API data)
 const mockInstructor: Instructor = {
@@ -50,7 +48,7 @@ const mockUser: User = {
     sessionsIncluded: 16,
     sessionsUsed: 8
   },
-  selectedSessions: ['1', '2', '4'], // Mock user enrolled in 3 sessions
+  selectedSessions: ['1'], // Mock user enrolled in 1 session only
   progress: {
     totalHours: 45,
     completedLessons: 12,
@@ -71,26 +69,61 @@ const mockUser: User = {
   }
 };
 
-const mockSessions: Session[] = [
+// Helper function to get date for specific day of week
+const getDateForDay = (dayName: string, offset: number = 0): string => {
+  const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+  const today = new Date();
+  today.setDate(today.getDate() + offset);
+  
+  const targetDayIndex = days.indexOf(dayName);
+  const currentDayIndex = today.getDay();
+  
+  const daysUntilTarget = (targetDayIndex - currentDayIndex + 7) % 7;
+  const targetDate = new Date(today);
+  targetDate.setDate(today.getDate() + daysUntilTarget);
+  
+  return targetDate.toISOString().split('T')[0];
+};
+
+// Helper function to create session instances for Mon-Thu
+const createWeeklySessionInstances = (baseSession: any, sessionNumber: number) => {
+  const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday'];
+  const instances = [];
+  
+  for (let i = 0; i < days.length; i++) {
+    const day = days[i];
+    instances.push({
+      ...baseSession,
+      id: `${sessionNumber}-${i + 1}`, // Session 1-1, 1-2, 1-3, 1-4
+      schedule: {
+        ...baseSession.schedule,
+        day: day
+      },
+      // Vary status across the week for demo
+      status: i === 0 ? 'ended' : i === 1 ? 'in-progress' : i === 2 ? 'active' : 'cancelled'
+    });
+  }
+  
+  return instances;
+};
+
+const baseSessionTemplates = [
   {
-    id: '1',
-    title: 'Evening Quran Session',
-    description: 'Mixed-level Quran learning session for students in North American time zones.',
+    title: 'Session 1',
+    description: 'Mixed-level Quran learning session.',
     instructor: mockInstructor,
     schedule: {
-      day: 'Monday',
-      startTime: '23:00',
-      endTime: '01:00',
+      startTime: '09:00',
+      endTime: '11:00',
       timezone: 'EST'
     },
     region: 'North America',
     levelRange: 'mixed',
     ageGroup: 'all',
-    maxStudents: 15,
-    enrolledStudents: 12,
-    price: 25,
-    category: 'recitation',
-    status: 'active',
+    maxStudents: 12,
+    enrolledStudents: 10, // Increased to include our mock user
+    price: 30,
+    category: 'memorization',
     zoomMeeting: {
       id: 'zm1',
       sessionId: '1',
@@ -98,36 +131,33 @@ const mockSessions: Session[] = [
       joinUrl: 'https://zoom.us/j/123456789?pwd=example',
       hostUrl: 'https://zoom.us/s/123456789?zak=example',
       password: 'quran123',
-      startTime: '2025-09-03T23:00:00Z',
+      startTime: '2025-09-03T09:00:00Z',
       duration: 120,
       recordingEnabled: true,
       status: 'scheduled',
       nativeAppLink: 'zoommtg://zoom.us/join?confno=123456789&pwd=quran123',
       webLink: 'https://zoom.us/wc/join/123456789?pwd=quran123',
-      generatedAt: '2025-09-03T21:00:00Z',
+      generatedAt: '2025-09-03T07:00:00Z',
       isReady: true
     },
     materials: ['Quran', 'Basic Tajweed Guide']
   },
   {
-    id: '2',
-    title: 'European Evening Session',
-    description: 'Time zone-friendly session for European students.',
+    title: 'Session 2',
+    description: 'Advanced Tajweed and recitation techniques.',
     instructor: mockInstructor,
     schedule: {
-      day: 'Wednesday',
-      startTime: '20:00',
-      endTime: '22:00',
-      timezone: 'CET'
+      startTime: '14:00',
+      endTime: '16:00',
+      timezone: 'EST'
     },
-    region: 'Europe',
-    levelRange: 'mixed',
+    region: 'North America',
+    levelRange: 'advanced-focus',
     ageGroup: 'adult',
     maxStudents: 10,
     enrolledStudents: 8,
-    price: 35,
+    price: 45,
     category: 'tajweed',
-    status: 'active',
     zoomMeeting: {
       id: 'zm2',
       sessionId: '2',
@@ -135,24 +165,22 @@ const mockSessions: Session[] = [
       joinUrl: 'https://zoom.us/j/987654321?pwd=example',
       hostUrl: 'https://zoom.us/s/987654321?zak=example',
       password: 'tajweed123',
-      startTime: '2025-09-04T20:00:00Z',
+      startTime: '2025-09-04T14:00:00Z',
       duration: 120,
       recordingEnabled: true,
       status: 'scheduled',
       nativeAppLink: 'zoommtg://zoom.us/join?confno=987654321&pwd=tajweed123',
       webLink: 'https://zoom.us/wc/join/987654321?pwd=tajweed123',
-      generatedAt: '2025-09-04T18:00:00Z',
+      generatedAt: '2025-09-04T12:00:00Z',
       isReady: true
     },
     materials: ['Quran', 'Tajweed Rules', 'Practice Sheets']
   },
   {
-    id: '3',
-    title: 'Beginner Memorization Circle',
-    description: 'Learn Quranic memorization techniques with fellow beginners.',
+    title: 'Session 3',
+    description: 'Beginner-friendly memorization techniques.',
     instructor: mockInstructor,
     schedule: {
-      day: 'Tuesday',
       startTime: '19:00',
       endTime: '21:00',
       timezone: 'EST'
@@ -160,11 +188,10 @@ const mockSessions: Session[] = [
     region: 'North America',
     levelRange: 'beginner-focus',
     ageGroup: 'all',
-    maxStudents: 12,
-    enrolledStudents: 9,
-    price: 20,
+    maxStudents: 15,
+    enrolledStudents: 12,
+    price: 25,
     category: 'memorization',
-    status: 'active',
     zoomMeeting: {
       id: 'zm3',
       sessionId: '3',
@@ -184,14 +211,12 @@ const mockSessions: Session[] = [
     materials: ['Quran', 'Memorization Journal']
   },
   {
-    id: '4',
-    title: 'Weekend Family Session',
-    description: 'Family-friendly Quran learning session for parents and children.',
+    title: 'Session 4',
+    description: 'Family-friendly Quran learning session.',
     instructor: mockInstructor,
     schedule: {
-      day: 'Saturday',
-      startTime: '10:00',
-      endTime: '12:00',
+      startTime: '16:00',
+      endTime: '18:00',
       timezone: 'EST'
     },
     region: 'North America',
@@ -199,177 +224,88 @@ const mockSessions: Session[] = [
     ageGroup: 'all',
     maxStudents: 20,
     enrolledStudents: 15,
-    price: 15,
+    price: 20,
     category: 'recitation',
-    status: 'active',
     zoomMeeting: {
       id: 'zm4',
       sessionId: '4',
-      meetingId: '789123456',
-      joinUrl: 'https://zoom.us/j/789123456?pwd=example',
-      hostUrl: 'https://zoom.us/s/789123456?zak=example',
+      meetingId: '789456123',
+      joinUrl: 'https://zoom.us/j/789456123?pwd=example',
+      hostUrl: 'https://zoom.us/s/789456123?zak=example',
       password: 'family123',
-      startTime: '2025-09-06T10:00:00Z',
+      startTime: '2025-09-04T16:00:00Z',
       duration: 120,
       recordingEnabled: true,
       status: 'scheduled',
-      nativeAppLink: 'zoommtg://zoom.us/join?confno=789123456&pwd=family123',
-      webLink: 'https://zoom.us/wc/join/789123456?pwd=family123',
-      generatedAt: '2025-09-06T08:00:00Z',
+      nativeAppLink: 'zoommtg://zoom.us/join?confno=789456123&pwd=family123',
+      webLink: 'https://zoom.us/wc/join/789456123?pwd=family123',
+      generatedAt: '2025-09-04T14:00:00Z',
       isReady: true
     },
-    materials: ['Quran', 'Children\'s Activity Sheets']
-  },
-  {
-    id: '5',
-    title: 'Advanced Tajweed Mastery',
-    description: 'Deep dive into advanced Tajweed rules and perfect pronunciation.',
-    instructor: mockInstructor,
-    schedule: {
-      day: 'Thursday',
-      startTime: '21:00',
-      endTime: '23:00',
-      timezone: 'EST'
-    },
-    region: 'North America',
-    levelRange: 'advanced-focus',
-    ageGroup: 'adult',
-    maxStudents: 8,
-    enrolledStudents: 6,
-    price: 45,
-    category: 'tajweed',
-    status: 'active',
-    zoomMeeting: {
-      id: 'zm5',
-      sessionId: '5',
-      meetingId: '321654987',
-      joinUrl: 'https://zoom.us/j/321654987?pwd=example',
-      hostUrl: 'https://zoom.us/s/321654987?zak=example',
-      password: 'advanced123',
-      startTime: '2025-09-05T21:00:00Z',
-      duration: 120,
-      recordingEnabled: true,
-      status: 'scheduled',
-      nativeAppLink: 'zoommtg://zoom.us/join?confno=321654987&pwd=advanced123',
-      webLink: 'https://zoom.us/wc/join/321654987?pwd=advanced123',
-      generatedAt: '2025-09-05T19:00:00Z',
-      isReady: true
-    },
-    materials: ['Quran', 'Advanced Tajweed Manual', 'Audio Recordings']
-  },
-  {
-    id: '6',
-    title: 'Morning Recitation Session',
-    description: 'Beautiful morning session for Quran recitation practice.',
-    instructor: mockInstructor,
-    schedule: {
-      day: 'Monday',
-      startTime: '08:00',
-      endTime: '10:00',
-      timezone: 'EST'
-    },
-    region: 'North America',
-    levelRange: 'mixed',
-    ageGroup: 'all',
-    maxStudents: 15,
-    enrolledStudents: 12,
-    price: 30,
-    category: 'recitation',
-    status: 'active',
-    zoomMeeting: {
-      id: 'zm6',
-      sessionId: '6',
-      meetingId: '654321789',
-      joinUrl: 'https://zoom.us/j/654321789?pwd=example',
-      hostUrl: 'https://zoom.us/s/654321789?zak=example',
-      password: 'morning123',
-      startTime: '2025-09-02T08:00:00Z',
-      duration: 120,
-      recordingEnabled: true,
-      status: 'ended',
-      nativeAppLink: 'zoommtg://zoom.us/join?confno=654321789&pwd=morning123',
-      webLink: 'https://zoom.us/wc/join/654321789?pwd=morning123',
-      generatedAt: '2025-09-02T06:00:00Z',
-      isReady: false
-    },
-    materials: ['Quran', 'Recitation Guide']
-  },
-  {
-    id: '7',
-    title: 'Islamic Studies Workshop',
-    description: 'Comprehensive Islamic studies session covering history and teachings.',
-    instructor: mockInstructor,
-    schedule: {
-      day: 'Friday',
-      startTime: '15:00',
-      endTime: '17:00',
-      timezone: 'EST'
-    },
-    region: 'North America',
-    levelRange: 'mixed',
-    ageGroup: 'adult',
-    maxStudents: 20,
-    enrolledStudents: 8,
-    price: 25,
-    category: 'islamic-studies',
-    status: 'cancelled',
-    zoomMeeting: {
-      id: 'zm7',
-      sessionId: '7',
-      meetingId: '987123654',
-      joinUrl: 'https://zoom.us/j/987123654?pwd=example',
-      hostUrl: 'https://zoom.us/s/987123654?zak=example',
-      password: 'studies123',
-      startTime: '2025-09-06T15:00:00Z',
-      duration: 120,
-      recordingEnabled: true,
-      status: 'scheduled',
-      nativeAppLink: 'zoommtg://zoom.us/join?confno=987123654&pwd=studies123',
-      webLink: 'https://zoom.us/wc/join/987123654?pwd=studies123',
-      generatedAt: '2025-09-06T13:00:00Z',
-      isReady: false
-    },
-    materials: ['Islamic History Book', 'Hadith Collections']
-  },
-  {
-    id: '8',
-    title: 'Live Interactive Session',
-    description: 'Currently ongoing interactive Quran learning session.',
-    instructor: mockInstructor,
-    schedule: {
-      day: 'Wednesday',
-      startTime: '14:00',
-      endTime: '16:00',
-      timezone: 'EST'
-    },
-    region: 'North America',
-    levelRange: 'mixed',
-    ageGroup: 'all',
-    maxStudents: 18,
-    enrolledStudents: 16,
-    price: 35,
-    category: 'recitation',
-    status: 'active',
-    zoomMeeting: {
-      id: 'zm8',
-      sessionId: '8',
-      meetingId: '147258369',
-      joinUrl: 'https://zoom.us/j/147258369?pwd=example',
-      hostUrl: 'https://zoom.us/s/147258369?zak=example',
-      password: 'live123',
-      startTime: '2025-09-05T14:00:00Z',
-      duration: 120,
-      recordingEnabled: true,
-      status: 'started',
-      nativeAppLink: 'zoommtg://zoom.us/join?confno=147258369&pwd=live123',
-      webLink: 'https://zoom.us/wc/join/147258369?pwd=live123',
-      generatedAt: '2025-09-05T12:00:00Z',
-      isReady: true
-    },
-    materials: ['Quran', 'Interactive Worksheets']
+    materials: ['Quran', 'Family Activity Sheets']
   }
 ];
 
+// Generate all session instances (Mon-Thu for each template)
+const mockSessions: Session[] = baseSessionTemplates.flatMap((template, index) => 
+  createWeeklySessionInstances(template, index + 1)
+);
+
+// Create simple sessions for the sessions tab (just one instance of each)
+const mockSessionsForTab: Session[] = baseSessionTemplates.map((template, index) => ({
+  ...template as Session,
+  id: (index + 1).toString(),
+  schedule: {
+    ...template.schedule,
+    day: 'Monday' 
+  },
+  status: 'active' as const
+}));
+
+// Helper to get upcoming sessions for enrolled sessions only
+const getUpcomingEnrolledSessions = (allSessions: Session[], enrolledSessionIds: string[]) => {
+  // Simulate Tuesday (Sept 3, 2025) to show in-progress session
+  const today = new Date('2025-09-03'); // September 3, 2025 (Tuesday)
+  const yesterday = new Date(today);
+  yesterday.setDate(today.getDate() - 1); // Monday
+  const tomorrow = new Date(today);
+  tomorrow.setDate(today.getDate() + 1); // Wednesday
+  
+  const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+  
+  // Get sessions for yesterday, today, tomorrow
+  const relevantDays: string[] = [];
+  
+  // Add yesterday if it's a session day (Mon-Thu)
+  const yesterdayName = days[yesterday.getDay()];
+  if (['Monday', 'Tuesday', 'Wednesday', 'Thursday'].includes(yesterdayName)) {
+    relevantDays.push(yesterdayName);
+  }
+  
+  // Add today if it's a session day (Mon-Thu)
+  const todayName = days[today.getDay()];
+  if (['Monday', 'Tuesday', 'Wednesday', 'Thursday'].includes(todayName)) {
+    relevantDays.push(todayName);
+  }
+  
+  // Add tomorrow if it's a session day (Mon-Thu)
+  const tomorrowName = days[tomorrow.getDay()];
+  if (['Monday', 'Tuesday', 'Wednesday', 'Thursday'].includes(tomorrowName)) {
+    relevantDays.push(tomorrowName);
+  }
+  
+  // If we don't have enough days (weekends), add Monday for next week perspective
+  if (relevantDays.length < 2) {
+    relevantDays.push('Monday');
+  }
+  
+  // Filter sessions: must be enrolled AND in relevant days
+  return allSessions.filter(session => {
+    const baseSessionId = session.id.split('-')[0]; // Get base session ID (1, 2, 3, 4)
+    return enrolledSessionIds.includes(baseSessionId) && 
+           relevantDays.includes(session.schedule.day);
+  }).slice(0, 6); // Limit to 6 sessions for display
+};
 const mockNotifications: Notification[] = [
   {
     id: '1',
@@ -394,10 +330,11 @@ const mockRecitationEntries: RecitationEntry[] = [
   }
 ];
 
-function App() {
-  const [currentPage, setCurrentPage] = useState<Page>('home');
-  const { user: currentUser } = useAuth(); // Get user from useAuth hook instead of local state
+// Main App Content Component
+function AppContent() {
+  const { user: currentUser, logout } = useAuth();
   const { toasts, removeToast, success, error } = useToast();
+  const navigate = useNavigate();
 
   const handleSignup = async (userData: SignupFormData) => {
     console.log('Signup attempt:', userData);
@@ -413,52 +350,19 @@ function App() {
         telephone: userData.telephone,
         country: userData.country,
         dateOfBirth: userData.dateOfBirth,
-        age: userData.age, // Include age field
-        timezone: userData.timezone, // Include timezone
+        age: userData.age,
+        timezone: userData.timezone,
         parentInfo: userData.parentInfo
       };
 
-      // Call the backend registration API
       const response = await authService.register(registerData);
       
       console.log('Registration response:', response);
       
       if (response.success && response.data) {
-        // Successfully registered - set the user from backend response
-        // Ensure the user object has all required properties for the dashboard
-        const userData: User = {
-          ...response.data.user,
-          selectedSessions: ['1', '3'], // Give new users sample enrolled sessions
-          subscription: {
-            id: '1',
-            plan: 'free' as const,
-            status: 'active' as const,
-            startDate: new Date().toISOString(),
-            endDate: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString(),
-            price: 0,
-            autoRenew: false,
-            sessionsIncluded: 0,
-            sessionsUsed: 0
-          },
-          progress: {
-            totalHours: 0,
-            completedLessons: 0,
-            currentSurah: '',
-            memorizedVerses: 0,
-            achievements: [],
-            weeklyGoal: 5,
-            weeklyProgress: 0
-          },
-          dateJoined: new Date().toISOString(),
-          timezone: response.data.user.timezone || 'UTC'
-        };
-        
-        // setCurrentUser(userData); // TODO: Need to update useAuth to handle user updates
-        setCurrentPage('student-dashboard');
         success('Welcome to Ismail Academy!', 'Your account has been created successfully.');
-        console.log('Registration successful:', response.message);
+        navigate('/login');
       } else {
-        // Registration failed - show error message
         console.error('Registration failed:', response.message || response.error);
         error('Registration Failed', response.message || response.error || 'An unknown error occurred.');
       }
@@ -469,125 +373,171 @@ function App() {
   };
 
   const handleLogout = () => {
-    // setCurrentUser(null); // TODO: Use useAuth logout function
-    setCurrentPage('home');
+    logout(); // Use the useAuth logout function
+    success('Logged Out', 'You have been successfully logged out.');
+    // Force navigation to home page
+    navigate('/', { replace: true });
   };
 
   const handleJoinSession = (sessionId: string) => {
     console.log('Joining session:', sessionId);
-    // Here you would integrate with Zoom API
+    success('Joining Session', 'Redirecting to Zoom meeting...');
     window.open('https://zoom.us/j/meeting-id', '_blank');
-  };
-
-  const handleEnrollInSession = (sessionId: string) => {
-    console.log('Enrolling in session:', sessionId);
-    // Add session to user's selected sessions
-    if (currentUser) {
-      const updatedUser = {
-        ...currentUser,
-        selectedSessions: [...currentUser.selectedSessions, sessionId]
-      };
-      // setCurrentUser(updatedUser); // TODO: Need to update useAuth to handle user updates
-    }
   };
 
   const handleCreateSession = (sessionData: Partial<Session>) => {
     console.log('Creating session:', sessionData);
-    // Here you would call your backend API to create the session
+    success('Session Created', 'Your session has been created successfully.');
   };
 
   const handleDeleteSession = (sessionId: string) => {
     console.log('Deleting session:', sessionId);
-    // Here you would call your backend API to delete the session
+    success('Session Deleted', 'The session has been removed.');
   };
 
   const handleStartSession = (sessionId: string) => {
     console.log('Starting session:', sessionId);
-    // Here you would integrate with Zoom API to start the meeting
+    success('Session Started', 'The session is now live.');
     window.open('https://zoom.us/start/meeting-id', '_blank');
   };
 
   const handlePaymentComplete = (payment: Payment) => {
     console.log('Payment completed:', payment);
-    // Process payment and enroll user in session
-    if (currentUser) {
-      const updatedUser = {
-        ...currentUser,
-        selectedSessions: [...currentUser.selectedSessions, payment.sessionId]
-      };
-      // setCurrentUser(updatedUser); // TODO: Need to update useAuth to handle user updates
-    }
+    success('Payment Successful', 'Your payment has been processed successfully.');
   };
 
   const handleAddRecitation = (entry: Omit<RecitationEntry, 'id' | 'userId' | 'createdAt'>) => {
     console.log('Adding recitation entry:', entry);
-    // Here you would call your backend API to save the recitation entry
-    // For now, we'll just log it
+    success('Recitation Added', 'Your recitation entry has been saved.');
   };
 
   return (
-    <div className="App">
-      {currentPage === 'home' && (
-        <LandingPage
-          onGetStarted={() => setCurrentPage('signup')}
-          onLogin={() => setCurrentPage('login')}
-          onWatchSalatVideos={() => setCurrentPage('salat-videos')}
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
+      <Routes>
+        <Route 
+          path="/" 
+          element={
+            <LandingPage
+              onGetStarted={() => {
+                console.log('Get Started clicked - navigating to /signup');
+                navigate('/signup');
+              }}
+              onLogin={() => {
+                console.log('Sign In clicked - navigating to /login');
+                navigate('/login');
+              }}
+              onWatchSalatVideos={() => {
+                console.log('Watch Salat Videos clicked - navigating to /salat-videos');
+                navigate('/salat-videos');
+              }}
+            />
+          } 
         />
-      )}
-      
-      {currentPage === 'salat-videos' && (
-        <SalatVideosPage
-          onBack={() => setCurrentPage('home')}
+        
+        <Route 
+          path="/salat-videos" 
+          element={
+            <SalatVideosPage
+              onBack={() => navigate('/')}
+            />
+          } 
         />
-      )}
-      
-      {currentPage === 'login' && (
-        <LoginForm
-          onBack={() => setCurrentPage('home')}
-          onSignupClick={() => setCurrentPage('signup')}
-          onLoginSuccess={() => setCurrentPage('student-dashboard')}
-          onToastSuccess={success}
-          onToastError={error}
+        
+        <Route 
+          path="/login" 
+          element={
+            currentUser ? 
+              <Navigate to={currentUser.role === 'instructor' ? '/instructor-dashboard' : '/dashboard'} replace /> :
+              <LoginForm
+                onBack={() => navigate('/')}
+                onSignupClick={() => navigate('/signup')}
+                onLoginSuccess={(user) => {
+                  // Wait for useAuth state to update before navigating
+                  setTimeout(() => {
+                    if (user?.role === 'instructor') {
+                      navigate('/instructor-dashboard', { replace: true });
+                    } else {
+                      navigate('/dashboard', { replace: true });
+                    }
+                  }, 100); // Small delay to allow state update
+                }}
+                onToastSuccess={success}
+                onToastError={error}
+              />
+          } 
         />
-      )}
-      
-      {currentPage === 'signup' && (
-        <EnhancedSignupForm
-          onSignup={handleSignup}
-          onLoginClick={() => setCurrentPage('login')}
+        
+        <Route 
+          path="/signup" 
+          element={
+            currentUser ? 
+              <Navigate to={currentUser.role === 'instructor' ? '/instructor-dashboard' : '/dashboard'} replace /> :
+              <EnhancedSignupForm
+                onSignup={handleSignup}
+                onLoginClick={() => navigate('/login')}
+              />
+          } 
         />
-      )}
-      
-      {currentPage === 'student-dashboard' && currentUser && (
-        <StudentDashboard
-          user={currentUser}
-          availableSessions={mockSessions}
-          upcomingSessions={
-            currentUser.selectedSessions && currentUser.selectedSessions.length > 0
-              ? mockSessions.filter(s => currentUser.selectedSessions?.includes(s.id) || false)
-              : mockSessions.slice(0, 3) // Show first 3 sessions as upcoming for new users
-          }
-          notifications={mockNotifications}
-          recitationEntries={mockRecitationEntries}
-          onJoinSession={handleJoinSession}
-          onPaymentComplete={handlePaymentComplete}
-          onAddRecitation={handleAddRecitation}
-          onLogout={handleLogout}
+        
+        <Route 
+          path="/dashboard" 
+          element={
+            (() => {
+              // During login process, check both currentUser and localStorage
+              const userFromStorage = localStorage.getItem('quran-academy-user');
+              const fallbackUser = userFromStorage ? JSON.parse(userFromStorage) : null;
+              const effectiveUser = currentUser || fallbackUser;
+              
+              if (effectiveUser && effectiveUser.role === 'student') {
+                // For demo purposes, ensure user is enrolled in Session 1
+                const userWithEnrollment = {
+                  ...effectiveUser,
+                  selectedSessions: effectiveUser.selectedSessions?.length > 0 ? effectiveUser.selectedSessions : ['1']
+                };
+                
+                return (
+                  <StudentDashboard
+                    user={userWithEnrollment}
+                    availableSessions={mockSessionsForTab}
+                    upcomingSessions={getUpcomingEnrolledSessions(mockSessions, userWithEnrollment.selectedSessions || [])}
+                    notifications={mockNotifications}
+                    recitationEntries={mockRecitationEntries}
+                    onJoinSession={handleJoinSession}
+                    onPaymentComplete={handlePaymentComplete}
+                    onAddRecitation={handleAddRecitation}
+                    onLogout={handleLogout}
+                  />
+                );
+              } else {
+                return <Navigate to="/login" replace />;
+              }
+            })()
+          } 
         />
-      )}
-      
-      {currentPage === 'instructor-dashboard' && (
-        <InstructorDashboard
-          instructor={mockInstructor}
-          sessions={mockSessions}
-          students={[mockUser]}
-          onCreateSession={handleCreateSession}
-          onDeleteSession={handleDeleteSession}
-          onStartSession={handleStartSession}
-          onLogout={handleLogout}
+        
+        <Route 
+          path="/instructor-dashboard" 
+          element={
+            currentUser && currentUser.role === 'instructor' ? (
+              <InstructorDashboard
+                instructor={mockInstructor}
+                sessions={mockSessions}
+                students={[mockUser]}
+                onCreateSession={handleCreateSession}
+                onDeleteSession={handleDeleteSession}
+                onStartSession={handleStartSession}
+                onLogout={handleLogout}
+              />
+            ) : (
+              <Navigate to="/login" replace />
+            )
+          } 
         />
-      )}
-      
+        
+        {/* Catch all route - redirect to home */}
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+
       {/* Toast notifications */}
       <div className="fixed top-4 right-4 z-[9999] pointer-events-none">
         <div className="flex flex-col space-y-2 w-80 max-w-[calc(100vw-2rem)]">
@@ -604,8 +554,16 @@ function App() {
           ))}
         </div>
       </div>
-
     </div>
+  );
+}
+
+// Main App Component with Router
+function App() {
+  return (
+    <Router>
+      <AppContent />
+    </Router>
   );
 }
 

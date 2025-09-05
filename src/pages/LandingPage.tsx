@@ -63,21 +63,21 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onGetStarted, onLogin,
       location: "London, UK",
       rating: 5,
       text: "The live sessions are amazing! My teacher is so patient and knowledgeable. I've learned more in 3 months than I did in years of self-study.",
-      image: "https://images.unsplash.com/photo-1494790108755-2616b612b734?w=48&h=48&fit=crop&crop=face"
+      image: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48' viewBox='0 0 48 48'%3E%3Ccircle cx='24' cy='24' r='24' fill='%234F46E5'/%3E%3Ctext x='24' y='30' text-anchor='middle' fill='white' font-size='16' font-family='Arial'%3EA%3C/text%3E%3C/svg%3E"
     },
     {
       name: "Ahmad Hassan",
       location: "Toronto, Canada", 
       rating: 5,
       text: "Perfect for busy parents like me. The flexible scheduling allows me to learn while my kids are at school. Highly recommended!",
-      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=48&h=48&fit=crop&crop=face"
+      image: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48' viewBox='0 0 48 48'%3E%3Ccircle cx='24' cy='24' r='24' fill='%2306B6D4'/%3E%3Ctext x='24' y='30' text-anchor='middle' fill='white' font-size='16' font-family='Arial'%3EA%3C/text%3E%3C/svg%3E"
     },
     {
       name: "Fatima Ali",
       location: "Sydney, Australia",
       rating: 5,
       text: "My daughter loves her Quran classes! The teacher makes learning fun and engaging. We can see her progress every week.",
-      image: "https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?w=48&h=48&fit=crop&crop=face"
+      image: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48' viewBox='0 0 48 48'%3E%3Ccircle cx='24' cy='24' r='24' fill='%2310B981'/%3E%3Ctext x='24' y='30' text-anchor='middle' fill='white' font-size='16' font-family='Arial'%3EF%3C/text%3E%3C/svg%3E"
     }
   ];
 
@@ -332,23 +332,30 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onGetStarted, onLogin,
                 <div className="flex justify-between items-center p-4 bg-slate-50 rounded-lg">
                   <div>
                     <div className="font-semibold text-slate-900">Session 1</div>
-                    <div className="text-sm text-slate-600">Evening</div>
+                    <div className="text-sm text-slate-600">Morning</div>
                   </div>
-                  <div className="text-blue-700 font-semibold">7:00 PM - 8:00 PM</div>
+                  <div className="text-blue-700 font-semibold">9:00 AM - 11:00 AM</div>
                 </div>
                 <div className="flex justify-between items-center p-4 bg-slate-50 rounded-lg">
                   <div>
                     <div className="font-semibold text-slate-900">Session 2</div>
-                    <div className="text-sm text-slate-600">After Work Hours</div>
+                    <div className="text-sm text-slate-600">Afternoon</div>
                   </div>
-                  <div className="text-blue-700 font-semibold">8:00 PM - 9:00 PM</div>
+                  <div className="text-blue-700 font-semibold">2:00 PM - 4:00 PM</div>
                 </div>
                 <div className="flex justify-between items-center p-4 bg-slate-50 rounded-lg">
                   <div>
-                    <div className="font-semibold text-slate-900">Section 3</div>
-                    <div className="text-sm text-slate-600">Weekend Mornings</div>
+                    <div className="font-semibold text-slate-900">Session 3</div>
+                    <div className="text-sm text-slate-600">Evening</div>
                   </div>
-                  <div className="text-blue-700 font-semibold">10:00 AM - 11:00 AM</div>
+                  <div className="text-blue-700 font-semibold">7:00 PM - 9:00 PM</div>
+                </div>
+                <div className="flex justify-between items-center p-4 bg-slate-50 rounded-lg">
+                  <div>
+                    <div className="font-semibold text-slate-900">Session 4</div>
+                    <div className="text-sm text-slate-600">Late Afternoon</div>
+                  </div>
+                  <div className="text-blue-700 font-semibold">4:00 PM - 6:00 PM</div>
                 </div>
               </div>
             </div>
