@@ -224,16 +224,16 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onGetStarted, onLogin,
             </div>
 
             {/* Right Column - Video */}
-            <div className="order-1 lg:order-2 flex justify-center lg:justify-end">
-              <div className="relative">
+            <div className="order-1 lg:order-2 flex justify-center lg:justify-end items-center">
+              <div className="relative w-full max-w-sm lg:max-w-md">
                 {/* Video Container with decorative elements */}
                 <div className="relative z-10">
                   {/* Main video card */}
-                  <div className="bg-gradient-to-br from-white to-slate-50 rounded-3xl shadow-2xl p-4 sm:p-6 border border-slate-200">
-                    {/* Video element */}
-                    <div className="relative rounded-2xl overflow-hidden shadow-lg bg-slate-900">
+                  <div className="bg-gradient-to-br from-white to-slate-50 rounded-3xl shadow-2xl p-3 sm:p-4 border border-slate-200">
+                    {/* Video element - 480x800 aspect ratio maintained */}
+                    <div className="relative rounded-2xl overflow-hidden shadow-lg bg-slate-900" style={{ aspectRatio: '480/800' }}>
                       <video
-                        className="w-full h-auto max-h-[70vh] object-contain"
+                        className="w-full h-full object-cover"
                         autoPlay
                         loop
                         muted
