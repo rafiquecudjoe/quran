@@ -155,75 +155,144 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onGetStarted, onLogin,
       </header>
 
       {/* Hero Section */}
-      <section className="pt-16 pb-24">
+      <section className="relative py-12 lg:py-16 overflow-hidden bg-gradient-to-br from-slate-50 via-blue-50 to-slate-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="lg:grid lg:grid-cols-2 lg:gap-12 items-center">
-            <div className="mb-12 lg:mb-0">
-              <div className="inline-flex items-center px-4 py-2 bg-blue-100 text-blue-800 rounded-full text-sm font-medium mb-6">
-                <Star className="w-4 h-4 mr-2" />
-                Join 10,000+ students worldwide
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center">
+
+            {/* Left Column - Text Content */}
+            <div className="order-2 lg:order-1 space-y-8">
+              <div className="space-y-6">
+                <div className="inline-flex items-center px-4 py-2 bg-blue-100 text-blue-800 rounded-full text-sm font-medium">
+                  <Star className="w-4 h-4 mr-2" />
+                  Join 10,000+ students worldwide
+                </div>
+
+                <h1 className="text-4xl lg:text-5xl xl:text-6xl font-bold text-slate-900 leading-tight">
+                  Learn the Holy{' '}
+                  <span className="bg-gradient-to-r from-blue-700 to-blue-900 bg-clip-text text-transparent">
+                    Quran
+                  </span>{' '}
+                  Online
+                </h1>
+
+                <p className="text-lg lg:text-xl text-slate-600 leading-relaxed">
+                  Join live interactive Quran sessions scheduled for your time zone, where students
+                  of all skill levels learn together with certified instructors. <strong>Plus, watch our complete Salat prayer tutorials
+                  absolutely free</strong> - no registration required!
+                </p>
               </div>
-              <h1 className="text-4xl lg:text-6xl font-bold text-slate-900 leading-tight mb-6">
-                Learn the Holy{' '}
-                <span className="bg-gradient-to-r from-blue-700 to-blue-900 bg-clip-text text-transparent">
-                  Quran
-                </span>{' '}
-                Online
-              </h1>
-              <p className="text-xl text-slate-600 mb-8 leading-relaxed">
-                Join live interactive Quran sessions scheduled for your time zone, where students 
-                of all skill levels learn together with certified instructors. <strong>Plus, watch our complete Salat prayer tutorials 
-                absolutely free</strong> - no registration required!
-              </p>
+
               <div className="flex flex-col sm:flex-row gap-4">
-                <Button size="lg" onClick={onGetStarted} className="px-8 bg-gradient-to-r from-blue-700 to-blue-800 hover:from-blue-800 hover:to-blue-900 text-white shadow-lg">
+                <Button
+                  size="lg"
+                  onClick={onGetStarted}
+                  className="px-8 bg-gradient-to-r from-blue-700 to-blue-800 hover:from-blue-800 hover:to-blue-900 text-white shadow-lg hover:shadow-xl transition-all"
+                >
                   Start Learning Today
                   <ArrowRight className="w-5 h-5 ml-2" />
                 </Button>
-                <Button variant="outline" size="lg" className="px-8 border-blue-300 text-blue-700 hover:bg-blue-50 hover:border-blue-400" onClick={onWatchSalatVideos}>
+                <Button
+                  variant="outline"
+                  size="lg"
+                  className="px-8 border-blue-300 text-blue-700 hover:bg-blue-50 hover:border-blue-400"
+                  onClick={onWatchSalatVideos}
+                >
                   <Play className="w-5 h-5 mr-2" />
                   Free Salat Videos
                 </Button>
               </div>
-            </div>
-            <div className="relative">
-              <div className="relative z-10 bg-white rounded-2xl shadow-2xl p-8">
-                <div className="flex items-center justify-between mb-6">
-                  <div className="flex items-center space-x-3">
-                    <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
-                      <User className="w-6 h-6 text-blue-700" />
-                    </div>
-                    <div>
-                      <h3 className="font-semibold text-slate-900">Muallim Adubofour Ismael</h3>
-                      <p className="text-sm text-slate-500">Quran Instructor</p>
-                    </div>
+
+              {/* Trust Indicators */}
+              <div className="flex flex-wrap items-center gap-6 pt-4">
+                <div className="flex items-center space-x-2">
+                  <div className="flex -space-x-2">
+                    <div className="w-8 h-8 rounded-full bg-blue-500 border-2 border-white flex items-center justify-center text-white text-xs font-bold">A</div>
+                    <div className="w-8 h-8 rounded-full bg-teal-500 border-2 border-white flex items-center justify-center text-white text-xs font-bold">F</div>
+                    <div className="w-8 h-8 rounded-full bg-indigo-500 border-2 border-white flex items-center justify-center text-white text-xs font-bold">M</div>
                   </div>
-                  <Badge variant="success">Live</Badge>
+                  <span className="text-sm text-slate-600">10,000+ active students</span>
                 </div>
-                <div className="bg-slate-100 rounded-lg p-4 mb-4">
-                  <div className="text-center">
-                    <div className="w-16 h-16 bg-blue-700 rounded-full flex items-center justify-center mx-auto mb-3">
-                      <Play className="w-8 h-8 text-white" />
-                    </div>
-                    <p className="text-sm text-slate-600">Tajweed Session in Progress</p>
-                  </div>
-                </div>
-                <div className="flex items-center justify-between text-sm text-slate-500">
-                  <span className="flex items-center">
-                    <Calendar className="w-4 h-4 mr-1" />
-                    45 min
-                  </span>
-                  {/* <span className="flex items-center">
-                    <Users className="w-4 h-4 mr-1" />
-                    12 students
-                  </span> */}
+                <div className="flex items-center space-x-1">
+                  <Star className="w-5 h-5 text-yellow-400 fill-current" />
+                  <Star className="w-5 h-5 text-yellow-400 fill-current" />
+                  <Star className="w-5 h-5 text-yellow-400 fill-current" />
+                  <Star className="w-5 h-5 text-yellow-400 fill-current" />
+                  <Star className="w-5 h-5 text-yellow-400 fill-current" />
+                  <span className="text-sm text-slate-600 ml-2">4.9/5 rating</span>
                 </div>
               </div>
-              <div className="absolute -top-4 -right-4 w-72 h-72 bg-gradient-to-br from-blue-200 to-blue-300 rounded-full opacity-20"></div>
-              <div className="absolute -bottom-4 -left-4 w-64 h-64 bg-gradient-to-br from-blue-200 to-indigo-200 rounded-full opacity-20"></div>
             </div>
+
+            {/* Right Column - Video */}
+            <div className="order-1 lg:order-2 flex justify-center lg:justify-end">
+              <div className="relative">
+                {/* Video Container with decorative elements */}
+                <div className="relative z-10">
+                  {/* Main video card */}
+                  <div className="bg-gradient-to-br from-white to-slate-50 rounded-3xl shadow-2xl p-4 sm:p-6 border border-slate-200">
+                    {/* Video element */}
+                    <div className="relative rounded-2xl overflow-hidden shadow-lg bg-slate-900">
+                      <video
+                        className="w-full h-auto max-h-[70vh] object-contain"
+                        src="/video.mp4"
+                        autoPlay
+                        loop
+                        muted
+                        playsInline
+                      >
+                        Your browser does not support the video tag.
+                      </video>
+
+                      {/* Video overlay badge */}
+                      <div className="absolute top-4 left-4 right-4 flex justify-between items-start">
+                        <Badge variant="success" className="backdrop-blur-sm bg-green-500/90 text-white shadow-lg">
+                          <div className="w-2 h-2 bg-white rounded-full mr-2 animate-pulse"></div>
+                          Live Demo
+                        </Badge>
+                        <button
+                          onClick={onWatchSalatVideos}
+                          className="bg-white/90 backdrop-blur-sm hover:bg-white text-blue-700 px-4 py-2 rounded-full text-sm font-medium shadow-lg transition-all hover:shadow-xl"
+                        >
+                          <Play className="w-4 h-4 inline mr-1" />
+                          Watch Full
+                        </button>
+                      </div>
+                    </div>
+
+                    {/* Video caption */}
+                    <div className="mt-4 flex items-center justify-between">
+                      <div className="flex items-center space-x-3">
+                        <div className="w-10 h-10 bg-gradient-to-br from-blue-700 to-blue-800 rounded-full flex items-center justify-center">
+                          <User className="w-5 h-5 text-white" />
+                        </div>
+                        <div>
+                          <h3 className="font-semibold text-slate-900 text-sm">Muallim Adubofour Ismael</h3>
+                          <p className="text-xs text-slate-500">Quran Instructor</p>
+                        </div>
+                      </div>
+                      <div className="text-right">
+                        <p className="text-xs text-slate-500">Duration</p>
+                        <p className="text-sm font-semibold text-slate-900">45 min</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Decorative background elements */}
+                <div className="absolute -top-6 -right-6 w-72 h-72 bg-gradient-to-br from-blue-400/20 to-blue-600/20 rounded-full blur-3xl -z-10"></div>
+                <div className="absolute -bottom-6 -left-6 w-64 h-64 bg-gradient-to-br from-teal-400/20 to-indigo-600/20 rounded-full blur-3xl -z-10"></div>
+
+                {/* Floating accent elements */}
+                <div className="absolute top-1/4 -left-4 w-20 h-20 bg-blue-500/10 rounded-lg rotate-12 -z-10"></div>
+                <div className="absolute bottom-1/4 -right-4 w-16 h-16 bg-teal-500/10 rounded-lg -rotate-12 -z-10"></div>
+              </div>
+            </div>
+
           </div>
         </div>
+
+        {/* Bottom wave decoration */}
+        <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-white to-transparent"></div>
       </section>
 
       {/* Features Section */}
