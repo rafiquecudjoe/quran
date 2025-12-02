@@ -26,17 +26,17 @@ COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 # Traefik labels
 LABEL traefik.enable=true
-LABEL traefik.http.middlewares.gzip.compress=true
-LABEL traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https
-LABEL traefik.http.middlewares.redirect-to-https.redirectscheme.permanent=true
+LABEL traefik.http.middlewares.frontend-gzip.compress=true
+LABEL traefik.http.middlewares.frontend-redirect-https.redirectscheme.scheme=https
+LABEL traefik.http.middlewares.frontend-redirect-https.redirectscheme.permanent=true
 LABEL traefik.http.routers.frontend-http.entrypoints=http
-LABEL traefik.http.routers.frontend-http.rule=Host\(\`bsc00gsw8cko4880sc8wswwc.159.69.153.112.sslip.io\`,\`www.ismailacademy.net\`,\`ismailacademy.net\`\)
-LABEL traefik.http.routers.frontend-http.middlewares=redirect-to-https@docker
+LABEL traefik.http.routers.frontend-http.rule=Host\(\`bsc00gsw8cko4880sc8wswwc.159.69.153.112.sslip.io\`\)\ \|\|\ Host\(\`www.ismailacademy.net\`\)\ \|\|\ Host\(\`ismailacademy.net\`\)
+LABEL traefik.http.routers.frontend-http.middlewares=frontend-redirect-https@docker
 LABEL traefik.http.routers.frontend-https.entrypoints=https
-LABEL traefik.http.routers.frontend-https.rule=Host\(\`bsc00gsw8cko4880sc8wswwc.159.69.153.112.sslip.io\`,\`www.ismailacademy.net\`,\`ismailacademy.net\`\)
+LABEL traefik.http.routers.frontend-https.rule=Host\(\`bsc00gsw8cko4880sc8wswwc.159.69.153.112.sslip.io\`\)\ \|\|\ Host\(\`www.ismailacademy.net\`\)\ \|\|\ Host\(\`ismailacademy.net\`\)
 LABEL traefik.http.routers.frontend-https.tls=true
 LABEL traefik.http.routers.frontend-https.tls.certresolver=letsencrypt
-LABEL traefik.http.routers.frontend-https.middlewares=gzip@docker
+LABEL traefik.http.routers.frontend-https.middlewares=frontend-gzip@docker
 LABEL traefik.http.routers.frontend-https.service=frontend
 LABEL traefik.http.services.frontend.loadbalancer.server.port=80
 
