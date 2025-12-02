@@ -1,0 +1,36 @@
+# Coolify Deployment Configuration
+
+version: "3.8"
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    labels:
+      # Traefik configuration
+      - "traefik.enable=true"
+      - "traefik.http.middlewares.gzip.compress=true"
+      - "traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https"
+      
+      # HTTP to HTTPS redirect
+      - "traefik.http.routers.ismail-http.rule=Host(`ismailacademy.net`) || Host(`www.ismailacademy.net`)"
+      - "traefik.http.routers.ismail-http.entrypoints=http"
+      - "traefik.http.routers.ismail-http.middlewares=redirect-to-https"
+      
+      # HTTPS configuration
+      - "traefik.http.routers.ismail-https.rule=Host(`ismailacademy.net`) || Host(`www.ismailacademy.net`)"
+      - "traefik.http.routers.ismail-https.entrypoints=https"
+      - "traefik.http.routers.ismail-https.tls=true"
+      - "traefik.http.routers.ismail-https.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.ismail-https.middlewares=gzip"
+      
+      # Service configuration
+      - "traefik.http.services.ismail-academy.loadbalancer.server.port=80"
+      
+      # Caddy configuration (if using Caddy instead of Traefik)
+      - "caddy=ismailacademy.net www.ismailacademy.net"
+      - "caddy.reverse_proxy={{upstreams 80}}"
+      - "caddy.encode=zstd gzip"
+      - "caddy.header=-Server"
