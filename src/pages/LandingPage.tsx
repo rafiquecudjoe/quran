@@ -323,7 +323,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onGetStarted, onLogin,
                           <User className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
                         </div>
                         <div className="min-w-0">
-                          <h3 className="font-semibold text-slate-900 text-xs sm:text-sm truncate">Muallim Adubofour Ismael</h3>
+                          <h3 className="font-semibold text-slate-900 text-xs sm:text-sm truncate">Imam Adubofour Ismail</h3>
                           <p className="text-xs text-slate-500">Quran Instructor</p>
                         </div>
                       </div>
