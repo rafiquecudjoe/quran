@@ -28,8 +28,8 @@ import { SignupFormData, RegistrationType, FamilySignupFormData, ChildInfo } fro
 import { countries, type Country } from '../../utils/countryUtils';
 
 interface EnhancedSignupFormProps {
-  onSignup: (userData: SignupFormData) => void;
-  onFamilySignup?: (familyData: FamilySignupFormData) => void;
+  onSignup: (userData: SignupFormData) => Promise<void>;
+  onFamilySignup?: (familyData: FamilySignupFormData) => Promise<void>;
   onLoginClick: () => void;
 }
 
@@ -64,6 +64,7 @@ export const EnhancedSignupForm: React.FC<EnhancedSignupFormProps> = ({
   });
   const [errors, setErrors] = useState<{[key: string]: string}>({});
   const [selectedCountry, setSelectedCountry] = useState<Country | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Family registration state
   const [familyStep, setFamilyStep] = useState(1);
@@ -199,12 +200,12 @@ export const EnhancedSignupForm: React.FC<EnhancedSignupFormProps> = ({
     return Object.keys(newErrors).length === 0;
   };
 
-  const nextStep = () => {
+  const nextStep = async () => {
     if (validateStep(currentStep)) {
       if (currentStep < totalSteps) {
         setCurrentStep(currentStep + 1);
       } else {
-        handleSubmit();
+        await handleSubmit();
       }
     }
   };
@@ -215,9 +216,14 @@ export const EnhancedSignupForm: React.FC<EnhancedSignupFormProps> = ({
     }
   };
 
-  const handleSubmit = () => {
-    if (validateStep(currentStep)) {
-      onSignup(formData);
+  const handleSubmit = async () => {
+    if (validateStep(currentStep) && !isSubmitting) {
+      setIsSubmitting(true);
+      try {
+        await onSignup(formData);
+      } finally {
+        setIsSubmitting(false);
+      }
     }
   };
 
@@ -337,12 +343,12 @@ export const EnhancedSignupForm: React.FC<EnhancedSignupFormProps> = ({
     return Object.keys(newErrors).length === 0;
   };
 
-  const nextFamilyStep = () => {
+  const nextFamilyStep = async () => {
     if (validateFamilyStep(familyStep)) {
       if (familyStep < 4) {
         setFamilyStep(familyStep + 1);
       } else {
-        handleFamilySubmit();
+        await handleFamilySubmit();
       }
     }
   };
@@ -353,9 +359,14 @@ export const EnhancedSignupForm: React.FC<EnhancedSignupFormProps> = ({
     }
   };
 
-  const handleFamilySubmit = () => {
-    if (validateFamilyStep(4) && onFamilySignup) {
-      onFamilySignup(familyFormData);
+  const handleFamilySubmit = async () => {
+    if (validateFamilyStep(4) && onFamilySignup && !isSubmitting) {
+      setIsSubmitting(true);
+      try {
+        await onFamilySignup(familyFormData);
+      } finally {
+        setIsSubmitting(false);
+      }
     }
   };
 
@@ -1374,14 +1385,19 @@ export const EnhancedSignupForm: React.FC<EnhancedSignupFormProps> = ({
 
             <Button
               onClick={nextStep}
-              disabled={currentStep === 2 && formData.dateOfBirth && formData.age < 18}
+              disabled={isSubmitting || (currentStep === 2 && formData.dateOfBirth && formData.age < 18)}
               className={`flex items-center gap-2 ${
-                currentStep === 2 && formData.dateOfBirth && formData.age < 18
+                isSubmitting || (currentStep === 2 && formData.dateOfBirth && formData.age < 18)
                   ? 'bg-slate-300 cursor-not-allowed'
                   : 'bg-blue-700 hover:bg-blue-800'
               }`}
             >
-              {currentStep === totalSteps ? (
+              {isSubmitting ? (
+                <>
+                  <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                  Creating Account...
+                </>
+              ) : currentStep === totalSteps ? (
                 <>
                   <Check className="w-4 h-4" />
                   Create Account
@@ -1447,9 +1463,15 @@ export const EnhancedSignupForm: React.FC<EnhancedSignupFormProps> = ({
 
             <Button
               onClick={nextFamilyStep}
-              className="flex items-center gap-2 bg-blue-700 hover:bg-blue-700"
+              disabled={isSubmitting}
+              className={`flex items-center gap-2 ${isSubmitting ? 'bg-slate-300 cursor-not-allowed' : 'bg-blue-700 hover:bg-blue-800'}`}
             >
-              {familyStep === 4 ? (
+              {isSubmitting ? (
+                <>
+                  <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                  Registering...
+                </>
+              ) : familyStep === 4 ? (
                 <>
                   <UserPlus className="w-4 h-4" />
                   Register All Children
