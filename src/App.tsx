@@ -348,7 +348,10 @@ function AppContent() {
       if (response.success && response.data) {
         console.log('Registration successful, navigating to /countdown');
         success('Welcome to Ismail Academy!', 'Your account has been created successfully.');
-        navigate('/countdown');
+        // Small delay to allow state update before navigation
+        setTimeout(() => {
+          navigate('/countdown', { replace: true });
+        }, 100);
       } else {
         console.error('Registration failed:', response.message || response.error);
         error('Registration Failed', response.message || response.error || 'An unknown error occurred.');
@@ -373,7 +376,10 @@ function AppContent() {
           'Registration Successful!', 
           `${childCount} ${childCount === 1 ? 'child has' : 'children have'} been registered. Login credentials have been sent to ${familyData.parentEmail}`
         );
-        navigate('/countdown');
+        // Small delay to allow state update before navigation
+        setTimeout(() => {
+          navigate('/countdown', { replace: true });
+        }, 100);
       } else {
         console.error('Family registration failed:', response.message || response.error);
         error('Registration Failed', response.message || response.error || 'An unknown error occurred.');
