@@ -354,12 +354,15 @@ function AppContent() {
       } else {
         console.error('Registration failed:', response.message || response.error);
         error('Registration Failed', response.message || response.error || 'An unknown error occurred.');
-        // Throw error so SignupForm can reset its loading state
-        throw new Error(response.message || response.error || 'Registration failed');
+        // Throw error so SignupForm can reset its loading state (but don't show another toast)
+        throw new Error('HANDLED_ERROR');
       }
-    } catch (err) {
-      console.error('Registration error:', err);
-      error('Registration Error', 'Registration failed. Please check your connection and try again.');
+    } catch (err: any) {
+      // Only show toast if it's not already handled above
+      if (err?.message !== 'HANDLED_ERROR') {
+        console.error('Registration error:', err);
+        error('Registration Error', 'Registration failed. Please check your connection and try again.');
+      }
       // Re-throw so SignupForm can catch and reset loading state
       throw err;
     }
@@ -385,12 +388,15 @@ function AppContent() {
       } else {
         console.error('Family registration failed:', response.message || response.error);
         error('Registration Failed', response.message || response.error || 'An unknown error occurred.');
-        // Throw error so SignupForm can reset its loading state
-        throw new Error(response.message || response.error || 'Registration failed');
+        // Throw error so SignupForm can reset its loading state (but don't show another toast)
+        throw new Error('HANDLED_ERROR');
       }
-    } catch (err) {
-      console.error('Family registration error:', err);
-      error('Registration Error', 'Registration failed. Please check your connection and try again.');
+    } catch (err: any) {
+      // Only show toast if it's not already handled above
+      if (err?.message !== 'HANDLED_ERROR') {
+        console.error('Family registration error:', err);
+        error('Registration Error', 'Registration failed. Please check your connection and try again.');
+      }
       // Re-throw so SignupForm can catch and reset loading state
       throw err;
     }
