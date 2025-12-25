@@ -343,8 +343,10 @@ function AppContent() {
       const response = await authService.register(registerData);
       
       console.log('Registration response:', response);
+      console.log('Response success:', response.success, 'Response data:', response.data);
       
       if (response.success && response.data) {
+        console.log('Registration successful, navigating to /countdown');
         success('Welcome to Ismail Academy!', 'Your account has been created successfully.');
         navigate('/countdown');
       } else {
