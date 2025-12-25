@@ -221,7 +221,9 @@ export const EnhancedSignupForm: React.FC<EnhancedSignupFormProps> = ({
       setIsSubmitting(true);
       try {
         await onSignup(formData);
-      } finally {
+        // Don't reset isSubmitting here - component will unmount on successful navigation
+      } catch (error) {
+        // Only reset isSubmitting on error so user can retry
         setIsSubmitting(false);
       }
     }
@@ -364,7 +366,9 @@ export const EnhancedSignupForm: React.FC<EnhancedSignupFormProps> = ({
       setIsSubmitting(true);
       try {
         await onFamilySignup(familyFormData);
-      } finally {
+        // Don't reset isSubmitting here - component will unmount on successful navigation
+      } catch (error) {
+        // Only reset isSubmitting on error so user can retry
         setIsSubmitting(false);
       }
     }
