@@ -347,9 +347,10 @@ function AppContent() {
       
       if (response.success && response.data) {
         console.log('Registration successful, navigating to /countdown');
-        // Navigate FIRST before any state updates can trigger route guards
-        navigate('/countdown', { replace: true });
         success('Welcome to Ismail Academy!', 'Your account has been created successfully.');
+        // Use window.location for hard navigation to avoid React Router issues
+        window.location.href = '/countdown';
+        return; // Prevent any further execution
       } else {
         console.error('Registration failed:', response.message || response.error);
         error('Registration Failed', response.message || response.error || 'An unknown error occurred.');
@@ -374,12 +375,13 @@ function AppContent() {
       
       if (response.success) {
         const childCount = familyData.children.length;
-        // Navigate FIRST before any state updates can trigger route guards
-        navigate('/countdown', { replace: true });
         success(
           'Registration Successful!', 
           `${childCount} ${childCount === 1 ? 'child has' : 'children have'} been registered. Login credentials have been sent to ${familyData.parentEmail}`
         );
+        // Use window.location for hard navigation to avoid React Router issues
+        window.location.href = '/countdown';
+        return; // Prevent any further execution
       } else {
         console.error('Family registration failed:', response.message || response.error);
         error('Registration Failed', response.message || response.error || 'An unknown error occurred.');
