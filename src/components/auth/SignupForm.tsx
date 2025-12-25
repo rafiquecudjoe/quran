@@ -5,7 +5,6 @@ import {
   Lock, 
   Phone, 
   Globe, 
-  Calendar, 
   Users, 
   ArrowRight, 
   ArrowLeft, 
@@ -24,6 +23,7 @@ import {
 } from 'lucide-react';
 import { Button } from '../ui/Button';
 import { Card, CardContent, CardHeader } from '../ui/Card';
+import { DateOfBirthPicker } from '../ui/DateOfBirthPicker';
 import { SignupFormData, RegistrationType, FamilySignupFormData, ChildInfo } from '../../types';
 import { countries, type Country } from '../../utils/countryUtils';
 
@@ -737,22 +737,13 @@ export const EnhancedSignupForm: React.FC<EnhancedSignupFormProps> = ({
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-slate-700 mb-2">
-          Date of Birth *
-        </label>
-        <div className="relative">
-          <Calendar className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 w-5 h-5" />
-          <input
-            type="date"
-            value={formData.dateOfBirth}
-            onChange={(e) => updateFormData('dateOfBirth', e.target.value)}
-            max={new Date().toISOString().split('T')[0]}
-            className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors ${
-              errors.dateOfBirth || (formData.dateOfBirth && formData.age < 18) ? 'border-red-500' : 'border-slate-300'
-            }`}
-          />
-        </div>
-        {errors.dateOfBirth && <p className="text-red-500 text-sm mt-1">{errors.dateOfBirth}</p>}
+        <DateOfBirthPicker
+          value={formData.dateOfBirth}
+          onChange={(value) => updateFormData('dateOfBirth', value)}
+          error={errors.dateOfBirth || (formData.dateOfBirth && formData.age < 18 ? 'You must be 18 or older' : undefined)}
+          minAge={0}
+          maxAge={120}
+        />
         
         {formData.dateOfBirth && formData.age > 0 && formData.age >= 18 && (
           <div className="mt-3 p-3 bg-green-50 rounded-lg border border-green-200">
@@ -1212,23 +1203,17 @@ export const EnhancedSignupForm: React.FC<EnhancedSignupFormProps> = ({
               </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">Date of Birth *</label>
-                <input
-                  type="date"
+                <DateOfBirthPicker
                   value={child.dateOfBirth}
-                  onChange={(e) => updateChildInfo(index, 'dateOfBirth', e.target.value)}
-                  max={new Date().toISOString().split('T')[0]}
-                  className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${
-                    familyErrors[`child_${index}_dateOfBirth`] ? 'border-red-500' : 'border-slate-300'
-                  }`}
+                  onChange={(value) => updateChildInfo(index, 'dateOfBirth', value)}
+                  error={familyErrors[`child_${index}_dateOfBirth`]}
+                  minAge={4}
+                  maxAge={17}
                 />
-                {child.dateOfBirth && child.age !== undefined && (
-                  <p className="text-xs text-slate-500 mt-1">Age: {child.age} years old</p>
-                )}
-                {familyErrors[`child_${index}_dateOfBirth`] && (
-                  <p className="text-red-500 text-xs mt-1">{familyErrors[`child_${index}_dateOfBirth`]}</p>
+                {child.dateOfBirth && child.age !== undefined && !familyErrors[`child_${index}_dateOfBirth`] && (
+                  <p className="text-xs text-green-600 mt-1">✓ Age: {child.age} years old</p>
                 )}
               </div>
 
