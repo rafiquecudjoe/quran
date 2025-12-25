@@ -1,4 +1,4 @@
-import { User } from '../types';
+import { User, FamilySignupFormData, FamilyRegistrationResponse } from '../types';
 
 // API Configuration
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000';
@@ -30,6 +30,22 @@ export interface RegisterRequest {
         telephone: string;
         relationship: 'mother' | 'father' | 'guardian';
     };
+}
+
+export interface FamilyRegisterRequest {
+    parentFirstName: string;
+    parentLastName: string;
+    parentEmail: string;
+    parentTelephone: string;
+    relationship: 'mother' | 'father' | 'guardian';
+    country: string;
+    timezone?: string;
+    children: {
+        firstName: string;
+        lastName: string;
+        dateOfBirth: string;
+        quranLevel: string;
+    }[];
 }
 
 export interface AuthResponse {
@@ -214,6 +230,53 @@ class AuthService {
             return {
                 success: false,
                 message: 'Registration failed. Please check your information and try again.',
+                error: error instanceof Error ? error.message : 'Unknown error',
+            };
+        }
+    }
+
+    // Register family (multiple children)
+    async registerFamily(familyData: FamilySignupFormData): Promise<FamilyRegistrationResponse> {
+        try {
+            const requestData: FamilyRegisterRequest = {
+                parentFirstName: familyData.parentFirstName,
+                parentLastName: familyData.parentLastName,
+                parentEmail: familyData.parentEmail,
+                parentTelephone: familyData.parentTelephone,
+                relationship: familyData.relationship,
+                country: familyData.country,
+                timezone: familyData.timezone,
+                children: familyData.children.map(child => ({
+                    firstName: child.firstName,
+                    lastName: child.lastName,
+                    dateOfBirth: child.dateOfBirth,
+                    quranLevel: child.quranLevel,
+                })),
+            };
+
+            const response = await makeAPIRequest('customers/register-family', 'POST', requestData);
+
+            if (response.data) {
+                return {
+                    success: true,
+                    message: response.message || 'Family registration successful! Check your email for login credentials.',
+                    data: {
+                        parentEmail: familyData.parentEmail,
+                        childrenRegistered: response.data.childrenRegistered || [],
+                    },
+                };
+            } else {
+                return {
+                    success: false,
+                    message: response.message || 'Family registration failed',
+                    error: response.error || response.message,
+                };
+            }
+        } catch (error) {
+            console.error('Family registration error:', error);
+            return {
+                success: false,
+                message: 'Family registration failed. Please check your information and try again.',
                 error: error instanceof Error ? error.message : 'Unknown error',
             };
         }

@@ -56,6 +56,47 @@ export interface SignupFormData {
     age: number;
 }
 
+// Multi-child registration types
+export type RegistrationType = 'adult' | 'parent';
+
+export interface ChildInfo {
+    firstName: string;
+    lastName: string;
+    dateOfBirth: string;
+    quranLevel: string;
+    age?: number;
+}
+
+export interface FamilySignupFormData {
+    // Parent/Guardian contact information
+    parentFirstName: string;
+    parentLastName: string;
+    parentEmail: string;
+    parentTelephone: string;
+    relationship: 'mother' | 'father' | 'guardian';
+    country: string;
+    timezone?: string;
+
+    // Children information
+    numberOfChildren: number;
+    children: ChildInfo[];
+}
+
+export interface FamilyRegistrationResponse {
+    success: boolean;
+    message: string;
+    data?: {
+        parentEmail: string;
+        childrenRegistered: {
+            firstName: string;
+            lastName: string;
+            username: string;
+            // Password not returned for security - sent via email only
+        }[];
+    };
+    error?: string;
+}
+
 export interface Instructor {
     id: string;
     name: string;

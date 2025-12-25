@@ -1,12 +1,13 @@
 import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import { LandingPage } from './pages/LandingPage';
 import { SalatVideosPage } from './pages/SalatVideosPage';
+import { CountdownPage } from './pages/CountdownPage';
 import { LoginForm } from './components/auth/LoginForm';
 import { EnhancedSignupForm } from './components/auth/SignupForm';
 import { StudentDashboard } from './components/dashboard/StudentDashboard';
 import { InstructorDashboard } from './components/dashboard/InstructorDashboardNew';
 import { Toast } from './components/ui/Toast';
-import { User, Session, Instructor, Notification, Payment, RecitationEntry, SignupFormData } from './types';
+import { User, Session, Instructor, Notification, Payment, RecitationEntry, SignupFormData, FamilySignupFormData } from './types';
 import { authService, RegisterRequest } from './services/authService';
 import { useAuth } from './hooks/useAuth';
 import { useToast } from './hooks/useToast';
@@ -345,13 +346,38 @@ function AppContent() {
       
       if (response.success && response.data) {
         success('Welcome to Ismail Academy!', 'Your account has been created successfully.');
-        navigate('/login');
+        navigate('/countdown');
       } else {
         console.error('Registration failed:', response.message || response.error);
         error('Registration Failed', response.message || response.error || 'An unknown error occurred.');
       }
     } catch (err) {
       console.error('Registration error:', err);
+      error('Registration Error', 'Registration failed. Please check your connection and try again.');
+    }
+  };
+
+  const handleFamilySignup = async (familyData: FamilySignupFormData) => {
+    console.log('Family signup attempt:', familyData);
+    
+    try {
+      const response = await authService.registerFamily(familyData);
+      
+      console.log('Family registration response:', response);
+      
+      if (response.success) {
+        const childCount = familyData.children.length;
+        success(
+          'Registration Successful!', 
+          `${childCount} ${childCount === 1 ? 'child has' : 'children have'} been registered. Login credentials have been sent to ${familyData.parentEmail}`
+        );
+        navigate('/countdown');
+      } else {
+        console.error('Family registration failed:', response.message || response.error);
+        error('Registration Failed', response.message || response.error || 'An unknown error occurred.');
+      }
+    } catch (err) {
+      console.error('Family registration error:', err);
       error('Registration Error', 'Registration failed. Please check your connection and try again.');
     }
   };
@@ -430,14 +456,11 @@ function AppContent() {
               <LoginForm
                 onBack={() => navigate('/')}
                 onSignupClick={() => navigate('/signup')}
-                onLoginSuccess={(user) => {
+                onLoginSuccess={() => {
                   // Wait for useAuth state to update before navigating
                   setTimeout(() => {
-                    if (user?.role === 'instructor') {
-                      navigate('/instructor-dashboard', { replace: true });
-                    } else {
-                      navigate('/dashboard', { replace: true });
-                    }
+                    // Navigate to countdown page - launching January 5th, 2026
+                    navigate('/countdown', { replace: true });
                   }, 100); // Small delay to allow state update
                 }}
                 onToastSuccess={success}
@@ -453,8 +476,22 @@ function AppContent() {
               <Navigate to={currentUser.role === 'instructor' ? '/instructor-dashboard' : '/dashboard'} replace /> :
               <EnhancedSignupForm
                 onSignup={handleSignup}
+                onFamilySignup={handleFamilySignup}
                 onLoginClick={() => navigate('/login')}
               />
+          } 
+        />
+
+        <Route 
+          path="/countdown" 
+          element={
+            <CountdownPage
+              userName={currentUser?.firstName || 'Student'}
+              onNotifyMe={() => {
+                success('Notification Set!', 'We\'ll email you when we launch on January 5th, 2026.');
+              }}
+              onLogout={handleLogout}
+            />
           } 
         />
         
