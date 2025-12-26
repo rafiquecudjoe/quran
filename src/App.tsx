@@ -1,6 +1,8 @@
 import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import { LandingPage } from './pages/LandingPage';
 import { SalatVideosPage } from './pages/SalatVideosPage';
+import { CoursesPage } from './pages/CoursesPage';
+import { ContactPage } from './pages/ContactPage';
 import { CountdownPage } from './pages/CountdownPage';
 import { LoginForm } from './components/auth/LoginForm';
 import { EnhancedSignupForm } from './components/auth/SignupForm';
@@ -455,6 +457,14 @@ function AppContent() {
                 console.log('Watch Salat Videos clicked - navigating to /salat-videos');
                 navigate('/salat-videos');
               }}
+              onViewCourses={() => {
+                console.log('Courses clicked - navigating to /courses');
+                navigate('/courses');
+              }}
+              onContactUs={() => {
+                console.log('Contact clicked - navigating to /contact');
+                navigate('/contact');
+              }}
             />
           } 
         />
@@ -464,6 +474,36 @@ function AppContent() {
           element={
             <SalatVideosPage
               onBack={() => navigate('/')}
+              onGetStarted={() => navigate('/signup')}
+              onLogin={() => navigate('/login')}
+              onViewCourses={() => navigate('/courses')}
+              onContactUs={() => navigate('/contact')}
+            />
+          } 
+        />
+
+        <Route 
+          path="/courses" 
+          element={
+            <CoursesPage
+              onBack={() => navigate('/')}
+              onGetStarted={() => navigate('/signup')}
+              onLogin={() => navigate('/login')}
+              onWatchSalatVideos={() => navigate('/salat-videos')}
+              onContactUs={() => navigate('/contact')}
+            />
+          } 
+        />
+
+        <Route 
+          path="/contact" 
+          element={
+            <ContactPage
+              onBack={() => navigate('/')}
+              onGetStarted={() => navigate('/signup')}
+              onLogin={() => navigate('/login')}
+              onWatchSalatVideos={() => navigate('/salat-videos')}
+              onViewCourses={() => navigate('/courses')}
             />
           } 
         />

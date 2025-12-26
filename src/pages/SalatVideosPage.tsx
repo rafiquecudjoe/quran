@@ -3,10 +3,15 @@ import { Play, Clock, Eye, Search } from 'lucide-react';
 import { Card, CardContent } from '../components/ui/Card';
 import { Badge } from '../components/ui/Badge';
 import { Input } from '../components/ui/Input';
+import { Button } from '../components/ui/Button';
 import { SalatVideo } from '../types';
 
 interface SalatVideosPageProps {
   onBack: () => void;
+  onGetStarted: () => void;
+  onLogin: () => void;
+  onViewCourses: () => void;
+  onContactUs: () => void;
 }
 
 // Mock salat videos data
@@ -91,7 +96,7 @@ const mockSalatVideos: SalatVideo[] = [
   }
 ];
 
-export const SalatVideosPage: React.FC<SalatVideosPageProps> = ({ onBack }) => {
+export const SalatVideosPage: React.FC<SalatVideosPageProps> = ({ onBack, onGetStarted, onLogin, onViewCourses, onContactUs }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [selectedVideo, setSelectedVideo] = useState<SalatVideo | null>(null);
@@ -202,19 +207,65 @@ export const SalatVideosPage: React.FC<SalatVideosPageProps> = ({ onBack }) => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
       {/* Header */}
-      <header className="bg-white shadow-sm border-b border-slate-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <div>
-              <h1 className="text-xl font-bold text-slate-900">Free Salat Videos</h1>
-              <p className="text-sm text-slate-600">Learn how to perform Islamic prayers</p>
+      <header className="bg-white/95 backdrop-blur-sm border-b border-slate-200 sticky top-0 z-50 shadow-sm">
+        <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center h-16 sm:h-20">
+            <div className="flex items-center space-x-2 sm:space-x-4 flex-shrink-0 cursor-pointer" onClick={onBack}>
+              <div className="w-14 h-14 sm:w-20 sm:h-20 rounded-xl flex items-center justify-center shadow-lg bg-white border border-slate-100 flex-shrink-0">
+                <img
+                  src="/logos/ismail-academy-logo.jpeg"
+                  alt="Ismail Academy"
+                  className="w-12 h-12 sm:w-18 sm:h-18 object-contain rounded-xl"
+                />
+              </div>
+              <div className="hidden sm:block">
+                <h1 className="text-lg sm:text-2xl font-bold bg-gradient-to-r from-blue-800 to-blue-900 bg-clip-text text-transparent">
+                  Ismail Academy
+                </h1>
+                <p className="text-xs sm:text-sm text-slate-600 font-medium">Learn Quran Online</p>
+              </div>
+              <div className="block sm:hidden">
+                <h1 className="text-sm font-bold bg-gradient-to-r from-blue-800 to-blue-900 bg-clip-text text-transparent">
+                  Ismail Academy
+                </h1>
+              </div>
             </div>
-            <button
-              onClick={onBack}
-              className="text-slate-600 hover:text-slate-900"
-            >
-              ← Back to Home
-            </button>
+            <div className="flex items-center gap-1 sm:gap-3">
+              <Button
+                variant="ghost"
+                onClick={onViewCourses}
+                className="hidden md:inline-flex text-slate-700 hover:text-slate-900 hover:bg-slate-50 text-sm"
+              >
+                Courses
+              </Button>
+              <Button
+                variant="ghost"
+                onClick={onContactUs}
+                className="hidden md:inline-flex text-slate-700 hover:text-slate-900 hover:bg-slate-50 text-sm"
+              >
+                Contact
+              </Button>
+              <Button
+                variant="ghost"
+                className="hidden lg:inline-flex text-blue-700 bg-blue-50 text-sm font-semibold border-b-2 border-blue-700"
+              >
+                <Play className="w-4 h-4 mr-2" />
+                Salat Videos
+              </Button>
+              <Button
+                variant="ghost"
+                onClick={onLogin}
+                className="hidden sm:inline-flex text-slate-700 hover:text-slate-900 hover:bg-slate-50 text-sm px-2 sm:px-4"
+              >
+                Sign In
+              </Button>
+              <Button
+                onClick={onGetStarted}
+                className="bg-gradient-to-r from-blue-700 to-blue-800 hover:from-blue-800 hover:to-blue-900 text-white shadow-md text-xs sm:text-sm px-3 sm:px-6 py-2 sm:py-3"
+              >
+                Get Started
+              </Button>
+            </div>
           </div>
         </div>
       </header>

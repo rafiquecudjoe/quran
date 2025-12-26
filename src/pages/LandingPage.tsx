@@ -11,7 +11,6 @@ import {
   Play,
   ArrowRight,
   User,
-  Calendar,
   Volume2,
   VolumeX
 } from 'lucide-react';
@@ -23,9 +22,11 @@ interface LandingPageProps {
   onGetStarted: () => void;
   onLogin: () => void;
   onWatchSalatVideos: () => void;
+  onViewCourses: () => void;
+  onContactUs: () => void;
 }
 
-export const LandingPage: React.FC<LandingPageProps> = ({ onGetStarted, onLogin, onWatchSalatVideos }) => {
+export const LandingPage: React.FC<LandingPageProps> = ({ onGetStarted, onLogin, onWatchSalatVideos, onViewCourses, onContactUs }) => {
   const [isVideoMuted, setIsVideoMuted] = useState(true);
 
   useEffect(() => {
@@ -165,16 +166,30 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onGetStarted, onLogin,
             <div className="flex items-center gap-1 sm:gap-3">
               <Button
                 variant="ghost"
+                onClick={onViewCourses}
+                className="hidden md:inline-flex text-slate-700 hover:text-slate-900 hover:bg-slate-50 text-sm"
+              >
+                Courses
+              </Button>
+              <Button
+                variant="ghost"
+                onClick={onContactUs}
+                className="hidden md:inline-flex text-slate-700 hover:text-slate-900 hover:bg-slate-50 text-sm"
+              >
+                Contact
+              </Button>
+              <Button
+                variant="ghost"
                 onClick={onWatchSalatVideos}
-                className="hidden sm:inline-flex text-blue-700 hover:text-blue-800 hover:bg-blue-50 text-sm"
+                className="hidden lg:inline-flex text-blue-700 hover:text-blue-800 hover:bg-blue-50 text-sm"
               >
                 <Play className="w-4 h-4 mr-2" />
-                Watch Salat Videos
+                Salat Videos
               </Button>
               <Button
                 variant="ghost"
                 onClick={onLogin}
-                className="hidden xs:inline-flex text-slate-700 hover:text-slate-900 hover:bg-slate-50 text-sm px-2 sm:px-4"
+                className="hidden sm:inline-flex text-slate-700 hover:text-slate-900 hover:bg-slate-50 text-sm px-2 sm:px-4"
               >
                 Sign In
               </Button>
@@ -594,6 +609,88 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onGetStarted, onLogin,
                 </CardContent>
               </Card>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* About Us Section */}
+      <section className="py-12 sm:py-16 lg:py-24 bg-white">
+        <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center">
+            {/* Left Content */}
+            <div className="space-y-6">
+              <div className="inline-flex items-center px-4 py-2 bg-blue-100 text-blue-800 rounded-full text-sm font-medium">
+                <Award className="w-4 h-4 mr-2" />
+                About Ismail Academy
+              </div>
+              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-slate-900">
+                Building Confidence, Discipline & Connection with the Quran
+              </h2>
+              <div className="space-y-4 text-slate-600 leading-relaxed">
+                <p>
+                  <strong>Ismail Academy</strong> is a trusted online Qur'an school dedicated to providing 
+                  high-quality and effective Qur'an education for students around the world.
+                </p>
+                <p>
+                  We specialize in teaching complete beginners, using a structured and proven approach 
+                  that makes learning the Qur'an simple, engaging, and highly effective. Our beginner 
+                  lessons are carefully designed to build strong foundations in reading, pronunciation, 
+                  and confidence—especially for non-Arabic speakers and children.
+                </p>
+                <p>
+                  Through our fully online platform, students can access their lessons from anywhere 
+                  in the world and learn at times that suit their busy schedules. We offer flexible 
+                  class timings, personalized instruction, and a supportive learning environment 
+                  tailored to each student's needs.
+                </p>
+              </div>
+            </div>
+
+            {/* Right Content - Key Features */}
+            <div className="bg-gradient-to-br from-blue-50 to-slate-50 rounded-2xl p-6 sm:p-8 lg:p-10">
+              <h3 className="text-xl font-bold text-slate-900 mb-6">Why Choose Us?</h3>
+              <div className="space-y-4">
+                <div className="flex items-start gap-4">
+                  <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <Globe className="w-5 h-5 text-blue-600" />
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-slate-900">Learn From Anywhere</h4>
+                    <p className="text-sm text-slate-600">Access lessons from any location in the world, at times that suit your schedule.</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-4">
+                  <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <Users className="w-5 h-5 text-blue-600" />
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-slate-900">Personalized Instruction</h4>
+                    <p className="text-sm text-slate-600">One-on-one sessions tailored to each student's pace and learning style.</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-4">
+                  <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <Award className="w-5 h-5 text-blue-600" />
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-slate-900">Proven Results</h4>
+                    <p className="text-sm text-slate-600">Growing number of satisfied students and parents testify to our excellence.</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-4">
+                  <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <BookOpen className="w-5 h-5 text-blue-600" />
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-slate-900">Lasting Connection</h4>
+                    <p className="text-sm text-slate-600">We don't just teach—we nurture a lifelong love for the Book of Allah.</p>
+                  </div>
+                </div>
+              </div>
+              <p className="mt-6 text-center text-blue-800 font-medium italic">
+                "At Ismail Academy, we build confidence, discipline, and a lasting connection with the Quran. Inshaa Allah."
+              </p>
+            </div>
           </div>
         </div>
       </section>
