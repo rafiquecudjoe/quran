@@ -7,7 +7,7 @@ const API_CLIENT_SECRET = import.meta.env.VITE_API_CLIENT_SECRET || 'your-client
 
 // Request/Response Types
 export interface LoginRequest {
-    email: string;
+    emailOrUsername: string;
     password: string;
     userType?: 'child' | 'adult';
 }

@@ -1019,13 +1019,17 @@ export const EnhancedSignupForm: React.FC<EnhancedSignupFormProps> = ({
                       key={country.code}
                       type="button"
                       onClick={() => {
-                        setFamilyFormData({ ...familyFormData, country: country.name });
+                        const newTelephone = (!familyFormData.parentTelephone || familyFormData.parentTelephone.startsWith('+'))
+                          ? country.phoneCode + ' '
+                          : familyFormData.parentTelephone;
+                        setFamilyFormData({ 
+                          ...familyFormData, 
+                          country: country.name, 
+                          parentTelephone: newTelephone 
+                        });
                         setSelectedFamilyCountry(country);
                         setFamilyCountrySearch('');
                         setShowFamilyCountryDropdown(false);
-                        if (!familyFormData.parentTelephone || familyFormData.parentTelephone.startsWith('+')) {
-                          setFamilyFormData(prev => ({ ...prev, country: country.name, parentTelephone: country.phoneCode + ' ' }));
-                        }
                       }}
                       className={`w-full text-left px-4 py-2 hover:bg-blue-50 transition-colors ${
                         familyFormData.country === country.name ? 'bg-blue-100 text-blue-800' : 'text-slate-700'

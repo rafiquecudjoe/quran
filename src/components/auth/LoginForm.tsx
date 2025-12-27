@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Mail, Lock, Eye, EyeOff, ArrowLeft } from 'lucide-react';
+import { User as UserIcon, Lock, Eye, EyeOff, ArrowLeft } from 'lucide-react';
 import { Button } from '../ui/Button';
 import { Input } from '../ui/Input';
 import { Card, CardContent, CardHeader } from '../ui/Card';
@@ -25,7 +25,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({
 }) => {
   const { login, isLoading } = useAuth();
   const [formData, setFormData] = useState<LoginRequest>({
-    email: '',
+    emailOrUsername: '',
     password: '',
     userType: 'adult'
   });
@@ -36,10 +36,10 @@ export const LoginForm: React.FC<LoginFormProps> = ({
   const validateForm = (): boolean => {
     const newErrors: FormErrors = {};
     
-    if (!formData.email) {
-      newErrors.email = 'Email is required';
-    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = 'Please enter a valid email address';
+    if (!formData.emailOrUsername) {
+      newErrors.emailOrUsername = 'Email or username is required';
+    } else if (formData.emailOrUsername.length < 3) {
+      newErrors.emailOrUsername = 'Please enter a valid email or username';
     }
     
     if (!formData.password) {
@@ -136,7 +136,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({
         <Card variant="elevated">
           <CardHeader className="text-center">
             <div className="w-16 h-16 bg-gradient-to-br from-blue-700 to-blue-800 rounded-full flex items-center justify-center mx-auto mb-4">
-              <Mail className="w-8 h-8 text-white" />
+              <UserIcon className="w-8 h-8 text-white" />
             </div>
             <h1 className="text-2xl font-bold text-slate-900 mb-2">Welcome Back</h1>
             <p className="text-slate-600">Sign in to continue your Quran learning journey</p>
@@ -151,13 +151,13 @@ export const LoginForm: React.FC<LoginFormProps> = ({
               )}
               
               <Input
-                type="email"
-                label="Email Address"
-                placeholder="Enter your email"
-                value={formData.email}
-                onChange={(e) => handleInputChange('email', e.target.value)}
-                error={errors.email}
-                leftIcon={<Mail className="w-5 h-5 text-slate-400" />}
+                type="text"
+                label="Email or Username"
+                placeholder="Enter your email or username"
+                value={formData.emailOrUsername}
+                onChange={(e) => handleInputChange('emailOrUsername', e.target.value)}
+                error={errors.emailOrUsername}
+                leftIcon={<UserIcon className="w-5 h-5 text-slate-400" />}
               />
               
               <Input
